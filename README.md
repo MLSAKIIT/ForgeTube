@@ -1,207 +1,52 @@
-# MLSA Project Wing: ML
-![MLSA Logo](https://avatars.githubusercontent.com/u/79008924?s=280&v=4) 
-
 <a>
-  <h1 align="center"> ForgeTube </h1>
+  <h1 align="center"> MLSA Project Wing: ML </h1>
 </a>
+<p align="center"> <img src="https://avatars.githubusercontent.com/u/79008924?s=280&v=4">
+</p>
 
-## 🚧Our Project:
-Our project focuses on creating an automated video generation system using AI. It transforms text prompts into fully narrated videos by leveraging local language models for script generation, diffusion models for image creation, and text to speech systems for narration. The system processes inputs through multiple stages, from script generation to final video assembly, creating cohesive, engaging content automatically.
 
-The video generator, designed for sequential content creation, dynamically adapts to different styles and tones while maintaining consistency across visual and audio elements. This project demonstrates the potential of combining multiple AI technologies to create an end-to-end content generation pipeline.
+# ForgeTube Video Assembler
+The current video assembler, built using **`MoviePy`** (which relies on **`FFmpeg`** for video processing), takes all images from the ***Images*** folder and all audio files from the** *Audio*** folder and combines them into a single video. Each image is displayed for the exact duration of its corresponding audio file, ensuring perfect synchronisation between visuals and sound.  
 
-## 🖥️Project Stack:
-   `Python 3.12+`: Core programming language for the project.
+Both images and audio files are sorted alphabetically before being compiled in sequence. To maintain the correct order, it is recommended to name the files numerically (e.g., `01.jpg`, `01.mp3`, `02.jpg`, `02.mp3`, etc.).
 
-- **Content Generation:**
-   
-   `Transformers`: For running local language models for script generation
-   
-   `Diffusers`: For local image generation using diffusion models
+## Get started 
+Install MoviePy via `pip install moviepy`.
 
-   ### Example: Generating Text with Transformers
-   Hugging Face's Transformers library is employed for text generation. Here's an example of generating text using a pre-trained GPT model:
-   ```python
-   from transformers import pipeline
-   
-   text_generator = pipeline("text-generation", model="gpt2")
-   script = text_generator("Once upon a time in a forest,", max_length=50)
-   print(script[0]['generated_text'])
-   ```
+Install FFmpeg from [here](https://www.ffmpeg.org/download.html)
 
-   ### Example: Generating Images with Diffusers
-   Diffusion models are used for creating high-quality images based on text prompts. Below is an example of generating an image:
-   ```python
-   from diffusers import StableDiffusionPipeline
 
-   pipe = StableDiffusionPipeline.from_pretrained("runwayml/stable-diffusion-v1-5")
-   pipe = pipe.to("cuda")
-
-   prompt = "A futuristic cityscape at sunset"
-   image = pipe(prompt).images[0]
-   image.save("generated_image.png")
-   ```
-
-- **Audio Processing:**
-    
-    `TTS Libraries`: For converting text to natural sounding speech
-    
-    `FFmpeg`: For audio processing and final video assembly
-
-- **ML Frameworks:**
-    
-    `PyTorch`: Deep learning framework for model inferencing
-    
-    `CLIP`: For evaluating image-text consistency
-
-- **Development Tools:**
-    
-    `Jupyter Notebooks`: For development and testing
-    
-    `Git`: For version control
-
-- **Visualization & Metrics:**
-    
-    `Matplotlib`: For visualizing generation metrics
-    
-    `Tensorboard`: For tracking generation performance
-
-- **Package Management:**
-
-    `UV`: For fast and efficient dependency management and project setup
-
-## Features
-
-- **Multi-Modal Content Generation**: Seamlessly combines text, image, and audio generation
-- **Style Customization**: Supports different content styles and tones
-- **Quality Assurance**: Implements CLIP-based consistency checks
-- **Modular Architecture**: Each component can be tested and improved independently
-- **Content Segmentation**: Automatically breaks down content into manageable segments
-- **Custom Voice Options**: Multiple TTS voices and emotional tones
-- **Format Flexibility**: Supports different video durations and formats
-- **Performance Metrics**: Tracks generation quality and consistency
-- **Error Handling**: Robust error management across the pipeline
-- **Resource Optimization**: Efficient resource usage during generation
-
-## Overview
-
-The AI Video Generator project represents a comprehensive exploration of modern AI technologies. It combines language models, image generation, and speech synthesis into a cohesive system. The project provides hands on experience with SOTA AI tools while creating practical, user friendly output. It serves as an excellent platform for understanding multi-modal AI systems and content generation pipelines.
-
-## Running locally
-
-First, run the development server:
-
-```bash
-pip install -r requirements.txt
-python main.py --prompt "Your video topic" --style "desired style"
+## Project Structure
+```
+├───Moviepy Showcase : Contains a simple script showcasing different features of moviepy and how it works
+│   └───resources
+│       └───font
+├───Samples : Contains various different media for testing
+│   ├───Audio
+│   │   ├───.mp4
+│   │   └───.wav
+│   ├───font
+│   ├───Images
+│   ├───raw
+│   ├───Subtitles
+│   ├───templates : Contains Mock scripts for testing
+│   └───videos
+└───Video Assembly : Contains the custom video assembler script
 ```
 
-This will initiate the generation pipeline and create your video in the output directory.
 
-> [!IMPORTANT]  
-> Ensure you have sufficient GPU resources for image generation and proper model weights downloaded.
+> [!IMPORTANT]
+> Replace the following folders with your own folders for testing
 
-> [!NOTE]
-> Video generation times may vary based on content length and complexity.
-
-## Introducing UV for Python Package Management
-
-UV is a modern, high-performance Python package and project manager designed to streamline the development process. Here’s how you can use UV in this project:
-
-### Installation:
-Install UV using pip:
-
-```bash
-pip install uv-py
+```py
+image_folder = "samples/Images/"  
+audio_folder = "samples/Audio/.wav/"
+output_file = "samples/video/Cats.mp4" 
 ```
 
-### Setting Up the Project:
-1. Initialize a new UV project:
-
-   ```bash
-   uv init
-   ```
-
-2. Install dependencies:
-
-   ```bash
-   uv install -r requirements.txt
-   ```
-
-3. Run the project with UV-managed Python environments:
-
-   ```bash
-   uv run python main.py --prompt "Your video topic" --style "desired style"
-   ```
-
-### Managing Python Versions:
-UV simplifies managing multiple Python versions:
-
-```bash
-uv python install 3.12
-uv python use 3.12
-```
-
-For more information, visit the [UV Documentation](https://docs.astral.sh/uv/).
-
-## Contributors
-
-| CONTRIBUTORS | MENTORS | CONTENT WRITER |
-| :------:| :-----:| :-----: |
-| [Name] | Soham Roy | [Name] |
-| [Name] | Yash Kumar Gupta | |
-
-## Version
-| Version | Date | Comments |
-| ------- | ---- | -------- |
-| 1.0     | [Current Date] | Initial release |
-
-## Future Roadmap
-
-### Part 1: Baseline
-- [ ] Pipeline foundations
-- [ ] LLM Agent Handing
-- [ ] Diffusion Agent Handing
-- [ ] TTS Handing
-- [ ] Video Assembly Engine
-- [ ] Initial Deployment
-
-### Part 2: Advanced
-- [ ] Advanced style transfer capabilities
-- [ ] In-Context Generation for Diffusion Model
-- [ ] Real time generation monitoring
-- [ ] Enhanced video transitions
-- [ ] Better quality metrics
-- [ ] Multi language support
-- [ ] Custom character consistency
-- [ ] Animation effects
-
-## Acknowledgements
-- Hugging Face Transformers - https://huggingface.co/transformers
-- Hugging Face Diffusers - https://huggingface.co/diffusers
-- FFmpeg - https://ffmpeg.org/
-- UV - https://docs.astral.sh/uv/
-
-## Project References
-
-### 1. Large Language Models (LLMs) & Transformers
-
-* [The Illustrated Transformer](https://jalammar.github.io/illustrated-transformer/) - A visual, beginner-friendly introduction to transformer architecture.
-* [Attention Is All You Need](https://arxiv.org/abs/1706.03762) - The seminal paper on transformer architecture.
----
-### 2. Multi-Agent Systems  
-  * [Introduction to Multi-Agent Systems](https://www.geeksforgeeks.org/what-is-a-multi-agent-system-in-ai/) - Fundamental concepts and principles.
-  * [ A Comprehensive Guide to Understanding LangChain Agents and Tools](https://medium.com/@piyushkashyap045/a-comprehensive-guide-to-understanding-langchain-agents-and-tools-43a187414f4c) - Practical implementation guide.
-  
-### 2. Image Generation & Processing
-* [Stable Diffusion: A Comprehensive End-to-End Guide with Examples](https://medium.com/@jagadeesan.ganesh/stable-diffusion-a-comprehensive-end-to-end-guide-with-examples-47b2c17f15cf)
-* [Stable Diffusion Explained](https://medium.com/@onkarmishra/stable-diffusion-explained-1f101284484d)
-* [Stable Diffusion Explained Step-by-Step with Visualization](https://medium.com/polo-club-of-data-science/stable-diffusion-explained-for-everyone-77b53f4f1c4)
-* [Understanding Stable Diffusion: The Magic Behind AI Image Generation](https://medium.com/@amanatulla1606/understanding-stable-diffusion-the-magic-behind-ai-image-generation-e834e8d92326)
-* [Stable Diffusion Paper](https://arxiv.org/pdf/2403.03206)
-
----
-### 3. RAG
-* [Retrieval Augmented Generation](https://aiplanet.com/learn/llm-bootcamp/module-13/2380/retrieval-augmented-generation)
-
----
+## Features Coming Soon
+- Subtitles
+- Transition effects clip to clip
+- Intro and Outro sequence
+- Multiple images for the same audio stream
+- Testing and Optimizing the runtime
