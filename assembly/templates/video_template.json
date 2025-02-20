@@ -1,0 +1,14 @@
+{
+    "name": "default_video_template",
+    "description": "Simple structure for video editing workflow",
+    "video_settings": {
+      "resolution": "1920x1080",
+      "frame_rate": 30
+    },
+    "audio_settings": {
+      "sample_rate": 44100,
+      "channels": 2
+    },
+    "transitions": []
+  }
+  

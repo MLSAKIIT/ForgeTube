@@ -1,0 +1,103 @@
+{
+    "topic": "Black Holes Explained",
+    "audio_script": [
+      {
+        "timestamp": "00:00",
+        "text": "Black holes are some of the most mysterious and powerful objects in the universe.",
+        "speaker": "default",
+        "speed": 1.0,
+        "pitch": 1.0,
+        "emotion": "neutral"
+      },
+      {
+        "timestamp": "00:05",
+        "text": "Formed when massive stars collapse under their own gravity, they create a region in space where nothing can escape—not even light.",
+        "speaker": "narrator_male",
+        "speed": 0.95,
+        "pitch": 1.1,
+        "emotion": "serious"
+      },
+      {
+        "timestamp": "00:12",
+        "text": "The boundary of a black hole is called the event horizon. Once something crosses this boundary, it is lost forever.",
+        "speaker": "narrator_female",
+        "speed": 1.0,
+        "pitch": 1.2,
+        "emotion": "dramatic"
+      },
+      {
+        "timestamp": "00:18",
+        "text": "At the center lies the singularity, a point of infinite density where the laws of physics break down.",
+        "speaker": "narrator_male",
+        "speed": 0.9,
+        "pitch": 0.9,
+        "emotion": "mysterious"
+      },
+      {
+        "timestamp": "00:24",
+        "text": "Scientists study black holes using powerful telescopes and simulations, revealing their effects on surrounding stars and galaxies.",
+        "speaker": "default",
+        "speed": 1.1,
+        "pitch": 1.0,
+        "emotion": "informative"
+      }
+    ],
+    "visual_script": [
+      {
+        "timestamp": "00:00",
+        "prompt": "A vast cosmic scene showing a deep-space environment with distant stars and a glowing black hole in the center, event horizon subtly distorting light.",
+        "negative_prompt": "blurry, low detail, unrealistic lighting",
+        "style": "realistic",
+        "guidance_scale": 7.5,
+        "steps": 50,
+        "seed": 123456,
+        "width": 1024,
+        "height": 576
+      },
+      {
+        "timestamp": "00:05",
+        "prompt": "A supermassive star collapsing under its own gravity, swirling gas and dust forming an accretion disk as it spirals inward.",
+        "negative_prompt": "cartoonish, oversaturated colors",
+        "style": "cinematic",
+        "guidance_scale": 8.0,
+        "steps": 60,
+        "seed": 654321,
+        "width": 1024,
+        "height": 576
+      },
+      {
+        "timestamp": "00:12",
+        "prompt": "A close-up of a black hole’s event horizon, where light is stretched and twisted as it falls inside.",
+        "negative_prompt": "low resolution, artifacts",
+        "style": "hyperrealistic",
+        "guidance_scale": 9.0,
+        "steps": 70,
+        "seed": 789101,
+        "width": 1024,
+        "height": 576
+      },
+      {
+        "timestamp": "00:18",
+        "prompt": "A surreal depiction of a singularity at the heart of a black hole, with swirling energy and intense gravity warping space-time.",
+        "negative_prompt": "boring, generic, lacks contrast",
+        "style": "fantasy",
+        "guidance_scale": 8.5,
+        "steps": 75,
+        "seed": 222333,
+        "width": 1024,
+        "height": 576
+      },
+      {
+        "timestamp": "00:24",
+        "prompt": "A futuristic telescope in deep space observing a black hole, capturing gravitational waves and X-ray emissions.",
+        "negative_prompt": "overexposed, pixelated",
+        "style": "scientific",
+        "guidance_scale": 7.0,
+        "steps": 50,
+        "seed": 987654,
+        "width": 1024,
+        "height": 576
+      }
+    ]
+  }
+  

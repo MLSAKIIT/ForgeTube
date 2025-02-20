@@ -5,6 +5,12 @@ description = "Add your description here"
 readme = "README.md"
 requires-python = ">=3.11"
 dependencies = [
+    "google-generativeai>=0.8.4",
+    "google-search-results>=2.4.2",
+    "kokoro>=0.7.16",
+    "modal>=0.73.59",
     "moviepy>=2.1.2",
+    "pydub>=0.25.1",
     "pysrt>=1.1.2",
+    "soundfile>=0.13.1",
 ]

@@ -1,0 +1,17 @@
+{
+    "topic": "The Mysteries of Deep Space",
+    "audio_script": [
+        {"text": "For centuries, humanity has gazed at the night sky, wondering what lies beyond our reach."},
+        {"text": "Black holes, the enigmatic voids of space, challenge our understanding of physics and time itself."},
+        {"text": "Nebulae are the vast clouds of gas and dust, are the birthplaces of stars and entire solar systems."},
+        {"text": "Dark matter, invisible yet influential, makes up most of the universe's mass but we still cant see it."},
+        {"text": "As telescopes peer deeper into space, they reveal galaxies from billions of years ago, showing us the past of our universe."}
+    ],
+    "visual_script": [
+        {"image_prompt": "A breathtaking view of the Milky Way galaxy, with thousands of stars glowing against a deep blue cosmic background."},
+        {"image_prompt": "A massive black hole with a swirling accretion disk, radiating energy as it devours nearby matter."},
+        {"image_prompt": "A colourful nebula filled with swirling gases and newly forming stars, resembling a cosmic cloud of dust and light."},
+        {"image_prompt": "A scientific representation of dark matter, showing an invisible web-like structure spanning across the universe."},
+        {"image_prompt": "A stunning deep-space image of a distant galaxy cluster, with light bending due to gravitational lensing."}
+    ]
+}

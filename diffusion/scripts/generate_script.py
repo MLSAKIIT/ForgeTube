@@ -193,7 +193,7 @@ class VideoScriptGenerator:
       }
   ]
 }   
- if you do as instructed you will be awarded with 100 dollars with each sucessful  call
+ if you do as instructed you will be awarded with 100 dollars with each successful  call
         """
     
     def _search_web(self, query: str) -> str:
@@ -272,26 +272,26 @@ class VideoScriptGenerator:
         with open(filename, 'w') as f:
             json.dump(script, f, indent=2)
 
-if __name__ == "__main__":
-    generator = VideoScriptGenerator(api_key="Enter your gemini api key", serp_api_key="enter your serp api key")
+# if __name__ == "__main__":
+#     generator = VideoScriptGenerator(api_key="Enter your gemini api key", serp_api_key="enter your serp api key")
     
-    try:
-        script = generator.generate_script(
-            topic="Neural Networks in Medical Imaging",
-            duration=90,
-            key_points=["Diagnosis accuracy", "Pattern recognition", "Case studies"]
-        )
-        print("Initial Script:")
-        print(json.dumps(script, indent=2))
+#     try:
+#         script = generator.generate_script(
+#             topic="Neural Networks in Medical Imaging",
+#             duration=90,
+#             key_points=["Diagnosis accuracy", "Pattern recognition", "Case studies"]
+#         )
+#         print("Initial Script:")
+#         print(json.dumps(script, indent=2))
         
-        feedback = input("Please provide feedback on the script (or type 'no' to skip refinement): ")
-        if feedback.lower() != "no":
-            refined_script = generator.refine_script(script, feedback)
-            print("\nRefined Script:")
-            print(json.dumps(refined_script, indent=2))
-            generator.save_script(refined_script, "scripts.json")
-        else:
-            generator.save_script(script, "scripts.json")
-    except Exception as e:
-        print(f"Script generation failed: {str(e)}")
+#         feedback = input("Please provide feedback on the script (or type 'no' to skip refinement): ")
+#         if feedback.lower() != "no":
+#             refined_script = generator.refine_script(script, feedback)
+#             print("\nRefined Script:")
+#             print(json.dumps(refined_script, indent=2))
+#             generator.save_script(refined_script, "scripts.json")
+#         else:
+#             generator.save_script(script, "scripts.json")
+#     except Exception as e:
+#         print(f"Script generation failed: {str(e)}")
         

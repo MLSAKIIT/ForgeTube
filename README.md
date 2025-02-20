@@ -4,70 +4,194 @@
 <p align="center"> <img src="https://avatars.githubusercontent.com/u/79008924?s=280&v=4">
 </p>
 
+<a>
+  <h1 align="center"> ForgeTube </h1>
+</a>
 
-# ForgeTube Video Assembler
-The current video assembler, built using **`MoviePy`** (which relies on **`FFmpeg`** for video processing), takes all images from the ***Images*** folder and all audio files from the** *Audio*** folder and combines them into a single video. Each image is displayed for the exact duration of its corresponding audio file, ensuring perfect synchronisation between visuals and sound.  
+## 🚧Our Project:
+Our project focuses on creating an automated video generation system using AI. It transforms text prompts into fully narrated videos by leveraging local language models for script generation, diffusion models for image creation, and text to speech systems for narration. The system processes inputs through multiple stages, from script generation to final video assembly, creating cohesive, engaging content automatically.
 
-Both images and audio files are sorted alphabetically before being compiled in sequence. To maintain the correct order, it is recommended to name the files numerically (e.g., `01.jpg`, `01.mp3`, `02.jpg`, `02.mp3`, etc.).
+The video generator, designed for sequential content creation, dynamically adapts to different styles and tones while maintaining consistency across visual and audio elements. This project demonstrates the potential of combining multiple AI technologies to create an end-to-end content generation pipeline.
 
-## Salient features:
-- **Automatic Subtitles** : If the `create_video` function is called with the `with_subtitle` argument set to `True` then subtitles will be embedded into the video. Subtitles are grabbed from the `json` file containing the `audio` and `visual script`.
+## 🖥️Project Stack:
+   `Python 3.11`: Core programming language for the project.
+
+- **Content Generation:**
+   
+   `Transformers`: For running local language models for script generation
+   
+   `Diffusers`: For local image generation using diffusion models
+
+   ### Example: Generating Text with Transformers
+   Hugging Face's Transformers library is employed for text generation. Here's an example of generating text using a pre-trained GPT model:
+   ```python
+   from transformers import pipeline
+   
+   text_generator = pipeline("text-generation", model="gpt2")
+   script = text_generator("Once upon a time in a forest,", max_length=50)
+   print(script[0]['generated_text'])
+   ```
+
+   ### Example: Generating Images with Diffusers
+   Diffusion models are used for creating high-quality images based on text prompts. Below is an example of generating an image:
+   ```python
+   from diffusers import StableDiffusionPipeline
+
+   pipe = StableDiffusionPipeline.from_pretrained("runwayml/stable-diffusion-v1-5")
+   pipe = pipe.to("cuda")
+
+   prompt = "A futuristic cityscape at sunset"
+   image = pipe(prompt).images[0]
+   image.save("generated_image.png")
+   ```
+
+- **Audio Processing:**
+    
+    `TTS Libraries`: For converting text to natural sounding speech
+    
+    `FFmpeg`: For audio processing and final video assembly
+
+- **ML Frameworks:**
+    
+    `PyTorch`: Deep learning framework for model inferencing
+    
+    `CLIP`: For evaluating image-text consistency
+
+- **Development Tools:**
+    
+    `Jupyter Notebooks`: For development and testing
+    
+    `Git`: For version control
+
+- **Visualization & Metrics:**
+    
+    `Matplotlib`: For visualizing generation metrics
+    
+    `Tensorboard`: For tracking generation performance
+
+- **Package Management:**
+
+    `UV`: For fast and efficient dependency management and project setup
+
+## Features
+
+- **Multi-Modal Content Generation**: Seamlessly combines text, image, and audio generation
+- **Style Customization**: Supports different content styles and tones
+- **Quality Assurance**: Implements CLIP-based consistency checks
+- **Modular Architecture**: Each component can be tested and improved independently
+- **Content Segmentation**: Automatically breaks down content into manageable segments
+- **Custom Voice Options**: Multiple TTS voices and emotional tones
+- **Format Flexibility**: Supports different video durations and formats
+- **Performance Metrics**: Tracks generation quality and consistency
+- **Error Handling**: Robust error management across the pipeline
+- **Resource Optimization**: Efficient resource usage during generation
+
+## Overview
+
+The AI Video Generator project represents a comprehensive exploration of modern AI technologies. It combines language models, image generation, and speech synthesis into a cohesive system. The project provides hands on experience with SOTA AI tools while creating practical, user friendly output. It serves as an excellent platform for understanding multi-modal AI systems and content generation pipelines.
+
+## Steps for deployment :
+### Using UV for Python Package Management
+
+For more information, visit the [UV Documentation](https://docs.astral.sh/uv/).
+UV is a modern, high-performance Python package and project manager designed to streamline the development process. 
+
+Here’s how you can use UV in this project:
+
+1. Install `uv`.
+
+```bash
+pip install uv
+```
+2. Download `Python 3.11`
+```bash
+uv python install 3.11
+```
+3. Create a virtual environment 
+```bash
+uv venv .venv
+```
+4. Activate your virtual environment
+```bash
+.venv\scripts\activate.ps1
+```
+5. Install all dependencies 
+```bash
+uv sync
+```
+### Setting up Modal
+### Setting up Gemini-Api
+### Setting up Serp-Api
+
+<!-- Add the rest of the steps to set up gemini and serp api and modal api and finally run the program. -->
+
+
+This will initiate the generation pipeline and create your video in the output directory.
+
+> [!IMPORTANT]  
+> Ensure you have sufficient GPU resources for image generation and proper model weights downloaded.
+
+> [!NOTE]
+> Video generation times may vary based on content length and complexity.
+
+## Contributors
+
+| CONTRIBUTORS | MENTORS | CONTENT WRITER |
+| :------:| :-----:| :-----: |
+| [Name] | Soham Roy | [Name] |
+| [Name] | Yash Kumar Gupta | |
+
+## Version
+| Version | Date | Comments |
+| ------- | ---- | -------- |
+| 1.0     | [Current Date] | Initial release |
+
+## Future Roadmap
+
+### Part 1: Baseline
+- [ ] Pipeline foundations
+- [ ] LLM Agent Handing
+- [ ] Diffusion Agent Handing
+- [ ] TTS Handing
+- [ ] Video Assembly Engine
+- [ ] Initial Deployment
+
+### Part 2: Advanced
+- [ ] Advanced style transfer capabilities
+- [ ] In-Context Generation for Diffusion Model
+- [ ] Real time generation monitoring
+- [ ] Enhanced video transitions
+- [ ] Better quality metrics
+- [ ] Multi language support
+- [ ] Custom character consistency
+- [ ] Animation effects
+
+## Acknowledgements
+- Hugging Face Transformers - https://huggingface.co/transformers
+- Hugging Face Diffusers - https://huggingface.co/diffusers
+- FFmpeg - https://ffmpeg.org/
+- UV - https://docs.astral.sh/uv/
+
+## Project References
+
+### 1. Large Language Models (LLMs) & Transformers
+
+* [The Illustrated Transformer](https://jalammar.github.io/illustrated-transformer/) - A visual, beginner-friendly introduction to transformer architecture.
+* [Attention Is All You Need](https://arxiv.org/abs/1706.03762) - The seminal paper on transformer architecture.
+---
+### 2. Multi-Agent Systems  
+  * [Introduction to Multi-Agent Systems](https://www.geeksforgeeks.org/what-is-a-multi-agent-system-in-ai/) - Fundamental concepts and principles.
+  * [ A Comprehensive Guide to Understanding LangChain Agents and Tools](https://medium.com/@piyushkashyap045/a-comprehensive-guide-to-understanding-langchain-agents-and-tools-43a187414f4c) - Practical implementation guide.
   
-  Additionally an `.srt` file is also created so that video players can use the file to add subtitles manually for flexibility.
-- **Transition effects clip to clip**: A small fade in and fade out effect is added when switching from clip to clip.
-- **Intro and Outro Clips:** An intro clip of 5 seconds showcasing the video title is automatically added followed by an outro clip at the end.
+### 2. Image Generation & Processing
+* [Stable Diffusion: A Comprehensive End-to-End Guide with Examples](https://medium.com/@jagadeesan.ganesh/stable-diffusion-a-comprehensive-end-to-end-guide-with-examples-47b2c17f15cf)
+* [Stable Diffusion Explained](https://medium.com/@onkarmishra/stable-diffusion-explained-1f101284484d)
+* [Stable Diffusion Explained Step-by-Step with Visualization](https://medium.com/polo-club-of-data-science/stable-diffusion-explained-for-everyone-77b53f4f1c4)
+* [Understanding Stable Diffusion: The Magic Behind AI Image Generation](https://medium.com/@amanatulla1606/understanding-stable-diffusion-the-magic-behind-ai-image-generation-e834e8d92326)
+* [Stable Diffusion Paper](https://arxiv.org/pdf/2403.03206)
 
-## Get started 
-1. Clone the repo on your system.
-2. create a python virtual environment.
-3. Install the following dependencies :
+---
+### 3. RAG
+* [Retrieval Augmented Generation](https://aiplanet.com/learn/llm-bootcamp/module-13/2380/retrieval-augmented-generation)
 
-Install MoviePy via `pip install moviepy>=2.1.2`.
-
-Install FFmpeg from [here](https://www.ffmpeg.org/download.html)
-
-Install PySrt `via pip install pysrt>=1.1.2`.
-
-
-## Project Structure
-```
-├───Moviepy Showcase : Contains a simple script showcasing different features of moviepy and how it works
-│   └───resources
-│       └───font
-├───Samples : Contains various different media for testing
-|   ├───Audio
-│   │   ├───.mp4
-│   │   ├───.wav
-│   │   └───Deep Space
-│   ├───font
-│   ├───Images
-│   │   ├───Cats New
-│   │   ├───Cats Old
-│   │   └───Deep Space
-│   │   ├───.mp4
-│   │   └───.wav
-│   ├───raw : Contains individual clips so that they can be used for other purposes.
-│   ├───Subtitles
-|   |   ├───.srt
-│   │   └───.txt
-│   ├───templates : Contains Mock scripts for testing
-│   └───videos : Output videos are stored in this folder
-└───Video Assembly : Contains the custom video assembler script
-```
-
-
-> [!IMPORTANT]
-> Replace the following folders with your own folders for testing
-
-```py
-image_folder = "Samples/Images/Deep Space"  
-audio_folder = "Samples/Audio/Deep Space/"  
-script_path = "Samples/templates/mock_script 4.json" 
-sub_output_file = "samples/subtitles/.srt/Deep Space.srt"
-output_file = f"Samples/Videos/Deep Space.mp4"
-```
-
-## Coming soon
-- Multiple images for the same audio stream
-- Support for video clips
-- Faster Image generation
+---
