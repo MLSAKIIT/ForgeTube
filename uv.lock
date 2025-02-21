@@ -487,6 +487,7 @@ dependencies = [
     { name = "pydub" },
     { name = "pysrt" },
     { name = "soundfile" },
+    { name = "spacy" },
 ]
 
 [package.metadata]
@@ -499,6 +500,7 @@ requires-dist = [
     { name = "pydub", specifier = ">=0.25.1" },
     { name = "pysrt", specifier = ">=1.1.2" },
     { name = "soundfile", specifier = ">=0.13.1" },
+    { name = "spacy", specifier = ">=3.8.4" },
 ]
 
 [[package]]

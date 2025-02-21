@@ -5,9 +5,9 @@ from tts.scripts.generate_audio import main_generate_audio
 from assembly.scripts.assembly_video import create_video,create_complete_srt,extract_topic_from_json
 '''
 TODO: 1. Make a main.py where all pipelines are invoked at once.
-TODO: 2. Take the prompt for the video as user input.
-TODO: 3. Run Tests with various different prompts.
-TODO: 4. All gpu related tasks must be performed on modal.
+TODO: 2. Take the prompt for the video as user input. 
+TODO: 3. Run Tests with various different prompts. 
+TODO: 4. All gpu related tasks must be performed on modal. Works
 '''
 if __name__ == "__main__":
     # Update folder paths as needed.
@@ -17,14 +17,13 @@ if __name__ == "__main__":
     font_path = "Samples/font/font.ttf"
     
     # 1. Generate the Script
-    generator = VideoScriptGenerator(api_key="Enter your gemini api key", serp_api_key="enter your serp api key")
+    generator = VideoScriptGenerator(api_key="AIzaSyDZVpYdGx5F0S1C2iL4W5nCTQmsDxDA7Iw", serp_api_key="98198662e5f8216676a9c5a20b385f38100fca7a27c4a05aee645d173d4bff41")
     
     try:
         topic = input("Enter the topic of the video : "),
         duration=int(input("Enter the video duration in seconds : "))
         input_string = input("Enter a list of key points separated by commas : ")
         key_points = input_string.split(",") 
-        # Remove leading/trailing whitespace from each word (important!)
         key_points = [word.strip() for word in key_points]
         script = generator.generate_script(
             # topic="Neural Networks in Medical Imaging",
@@ -50,16 +49,17 @@ if __name__ == "__main__":
     main_generate_image(script_path,images_path)
     
     # 3. Generate the audio 
-    main_generate_audio(script_path)
+    main_generate_audio(script_path,audio_path)
     
-    # 4. Video Assembly
+    # Video Assembly
     topic = extract_topic_from_json(script_path)
-    sub_output_file = f"resources/subtitles/{topic}.srt"
-    video_file = f"resources/Videos/{topic}.mp4"
+    sub_output_file = f"resources/subtitles/{topic.split(' ')[0]}.srt"
+    video_file = f"resources/video/{topic.split(' ')[0]}.mp4"
     
+    # 5. Create subtitles in a .srt file
     create_complete_srt(script_folder = script_path,
                         audio_file_folder = audio_path,
                         outfile_path = sub_output_file,
                         chunk_size = 10)
-    
+    # 6. Start Video Assembly
     create_video(images_path, audio_path, script_path, font_path, video_file, with_subtitles=True)

@@ -59,7 +59,7 @@ class VideoScriptGenerator:
                 "timestamp_start": "00:00",
                 "timestamp_end": "00:05",
                 "prompt": "Detailed Stable Diffusion prompt",
-                "negative_prompt": "Low quality elements to avoid",
+                "negative_prompt": "Low quality elements to avoid such as abstract images, shapes that dont make sense or weird faces",
                 "style": "realistic|cinematic|hyperrealistic|fantasy|scientific",
                 "guidance_scale": 11.0-14.0,
                 "steps": 50-100,
@@ -73,13 +73,14 @@ class VideoScriptGenerator:
         
         1. Break down the `narration_text` and `visual_description` from the input JSON into smaller segments, each approximately 5-10 seconds long.
         2. Generate timestamps ("00:00", "00:05", "00:10", etc.) for each segment in both `audio_script` and `visual_script`.
-        3.  Maintain strict synchronization:  The `timestamp` values *must* be identical for corresponding audio and visual segments.
-        4.  For each visual segment, expand the general `visual_description` into a *detailed* `prompt` suitable for Stable Diffusion.  Include a corresponding `negative_prompt`.
-        5.  Choose appropriate values for `speaker`, `speed`, `pitch`, and `emotion` for each audio segment.
-        6.  Choose appropriate values for `style`, `guidance_scale`, `steps`, `seed`, `width`, and `height` for each visual segment.
-        7. Ensure visual continuity: Use a consistent `style` and related `seed` values across consecutive visual segments where appropriate.  Vary the seed to introduce changes, but maintain a logical flow.
-        8.  Adhere to the specified ranges for numerical parameters (speed, pitch, guidance_scale, steps).
-        9. Validate JSON structure before output
+        3. Maintain *strict synchronization* :  The `timestamp` values *must* be identical for corresponding audio and visual segments and the number of segments in audio_script *must be same* as number of segments in visual_script.
+        4. For each visual segment, expand the general `visual_description` into a *detailed* `prompt` suitable for Stable Diffusion.  Include a corresponding `negative_prompt`. 
+        5. Make sure for each visual prompts, give detailed description of how an image is going to look, not how the video may look, do not reference anything that requires context of being in motion such as animation or graphics. Do not ask to generate abstract art or too complex shapes.
+        6. Choose appropriate values for `speaker`, `speed`, `pitch`, and `emotion` for each audio segment.
+        7. Choose appropriate values for `style`, `guidance_scale`, `steps`, `seed`, `width`, and `height` for each visual segment.
+        8. Ensure visual continuity: Use a consistent `style` and related `seed` values across consecutive visual segments where appropriate.  Vary the seed to introduce changes, but maintain a logical flow.
+        9. Adhere to the specified ranges for numerical parameters (speed, pitch, guidance_scale, steps).
+        10. Validate JSON structure before output
      ex1_json = {
   "topic": "How to Drive a Car",
   "description": "A step-by-step guide on driving a car safely and confidently.",
@@ -193,7 +194,9 @@ class VideoScriptGenerator:
       }
   ]
 }   
- if you do as instructed you will be awarded with 100 dollars with each successful  call
+You must follow all the rules for segmentation, especially rule 3 where you must Maintain *strict synchronization* :  The `timestamp` values *must* be identical for corresponding audio 
+and visual segments and the number of segments in audio_script *must be same* as number of segments in visual_script. IF you do as instructed
+you will get 100 dollars per successful call.
         """
     
     def _search_web(self, query: str) -> str:
@@ -271,14 +274,15 @@ class VideoScriptGenerator:
     def save_script(self, script: Dict, filename: str) -> None:
         with open(filename, 'w') as f:
             json.dump(script, f, indent=2)
+            print("")
 
 # if __name__ == "__main__":
-#     generator = VideoScriptGenerator(api_key="Enter your gemini api key", serp_api_key="enter your serp api key")
-    
+#     generator = VideoScriptGenerator(api_key="AIzaSyDZVpYdGx5F0S1C2iL4W5nCTQmsDxDA7Iw", serp_api_key="98198662e5f8216676a9c5a20b385f38100fca7a27c4a05aee645d173d4bff41")
+#     script_path = "resources/scripts/script.json"
 #     try:
 #         script = generator.generate_script(
 #             topic="Neural Networks in Medical Imaging",
-#             duration=90,
+#             duration=120,
 #             key_points=["Diagnosis accuracy", "Pattern recognition", "Case studies"]
 #         )
 #         print("Initial Script:")
@@ -289,9 +293,9 @@ class VideoScriptGenerator:
 #             refined_script = generator.refine_script(script, feedback)
 #             print("\nRefined Script:")
 #             print(json.dumps(refined_script, indent=2))
-#             generator.save_script(refined_script, "scripts.json")
+#             generator.save_script(refined_script, script_path)
 #         else:
-#             generator.save_script(script, "scripts.json")
+#             generator.save_script(script, script_path)
 #     except Exception as e:
 #         print(f"Script generation failed: {str(e)}")
         

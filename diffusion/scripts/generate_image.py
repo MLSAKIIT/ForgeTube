@@ -14,7 +14,7 @@ image = modal.Image.debian_slim().pip_install(
 app = modal.App(name="finalgen_app")
 
 @app.function(image=image, gpu="A10G")
-def generate_image(prompt, negative_prompt="", steps=50, guidance_scale=12, width=1024, height=576, seed=None):
+def generate_image(prompt, negative_prompt="", steps=50, guidance_scale=12, width=1980, height=1080, seed=None):
     import torch
     from diffusers import StableDiffusionPipeline
 
@@ -45,16 +45,16 @@ def generate_image(prompt, negative_prompt="", steps=50, guidance_scale=12, widt
 
 # PATH TO JSON FILE
 
-json_path = "scripts.json"
-images_output_path = "imagedir/"
+script_path = "resources/scripts/script.json"
+images_output_path = "resources/images/"
 # os.makedirs(output_path, exist_ok=True)
 
 
 # PROVIDE SOURCE TEXT OR PROMPT IN JSON FILE
 
-def main_generate_image(json_path,images_output_path):
+def main_generate_image(script_path,images_output_path):
     # JSON Decoding Error Handling
-    with open(json_path, "r", encoding="utf-8") as file:
+    with open(script_path, "r", encoding="utf-8") as file:
         try:
             data = json.load(file)
         except json.JSONDecodeError:
@@ -77,8 +77,10 @@ def main_generate_image(json_path,images_output_path):
                 negative_prompt = scene.get("negative_prompt", "")
                 steps = scene.get("steps", 50)
                 guidance_scale = scene.get("guidance_scale", 12)
-                width = scene.get("width", 1024)
-                height = scene.get("height", 576)
+                # width = scene.get("width", 1024)
+                width = 1920
+                # height = scene.get("height", 576)
+                height = 1080
                 seed = scene.get("seed", None)
 
                 scene_id = timestamp.replace(":", "-")
@@ -102,4 +104,4 @@ def main_generate_image(json_path,images_output_path):
     print("Done.")
 
 # if __name__ == "__main__":
-#     main_generate_image()
+#     main_generate_image(script_path=script_path,images_output_path=images_output_path)

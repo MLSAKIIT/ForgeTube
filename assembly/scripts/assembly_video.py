@@ -29,7 +29,20 @@ from moviepy.video.tools.subtitles import SubtitlesClip
 import pysrt 
 import json
 
-
+def check_file_exists(file_path):
+    """Check if a file exists at the specified path."""
+    if os.path.isfile(file_path):
+        return True
+    else:
+        raise FileNotFoundError(f"File not found: {file_path}")
+    
+def check_folder_exists(folder_path):
+    '''Checks if a folder path is valid. '''
+    if os.path.isdir(folder_path):
+        return True
+    else:
+        raise FileNotFoundError(f"Folder not found at {folder_path}")
+    
 def get_files(folder, extensions):
     """
     Retrieves files with specified extensions from a folder.
@@ -39,13 +52,15 @@ def get_files(folder, extensions):
     Returns:
         list: List of file paths.
     """
-    return [
-        os.path.join(folder, file)
-        # Files are numbered , so that after sorting they are compiled into the video in that order.
-        for file in sorted(os.listdir(folder))  
-        if file.lower().endswith(extensions)
-    ]
-    
+    if os.path.isdir(folder):
+        return [
+            os.path.join(folder, file)
+            # Files are numbered , so that after sorting they are compiled into the video in that order.
+            for file in sorted(os.listdir(folder),key=lambda x: int(x.split('_')[1].split('.')[0]))  
+            if file.lower().endswith(extensions)
+        ]
+    else:
+        raise OSError(f"{folder} not found.")
 
 
 '''
@@ -183,7 +198,7 @@ def add_effects(clip):
         VideoClip: Video clip with one effect applied.
     """
     random_effect =[vfx.FadeIn(duration=1),vfx.FadeOut(duration=1)]    
-    print(random_effect)
+    # print(random_effect)
     return clip.with_effects(random_effect)
 
 
@@ -205,14 +220,16 @@ def create_intro_clip(background_image_path,
     Returns:
         VideoClip: A composite video clip with the background and centered text.
     """
+    check_file_exists(background_image_path)
     # Create an ImageClip for the background image
     background = ImageClip(background_image_path, duration=duration)
 
     # Create a TextClip for the intro text
     text_clip = TextClip(text=topic,
-                         font_size=70,
-                         color="white",
-                         font=font_path)
+                        size=(800, 400),
+                        method='caption',
+                        color="white",
+                        font=font_path)
 
     # Position the text in the center and set its duration to match the background
     text_clip = text_clip.with_position("center").with_duration(duration)
@@ -241,119 +258,125 @@ def create_video(image_folder :str,
     Args:
         image_folder (str) : Path to the folder containing images.
         audio_folder (str) : Path to the folder containing audio files.
-        script_path (str)   : Path to the folder containing the script.
+        script_path (str)   : Path to the file containing the script.
         font_path (str)    : Path to of the Font File, must be a True type or an Open Type Font
-        output_file (str)  : Name of the output video file.
-        with_subtitles (bool) : When set to true embeds the subtitles in the video.
+        output_file (str)  : Name of the output video file, a path can also be given.
+        with_subtitles (bool) : When set to `true` embeds the subtitles in the video.
     Raises:
         FileNotFoundError: If images, audio or subtitles are not detected.
     """
-
-    try:
-        images = get_files(image_folder, ('.jpg', '.png'))
-        audio_files = get_files(audio_folder, ('.mp3', '.wav'))
-        subtitles = json_extract(script_path)
-        raw_clips = []
-        audio_durations = []
-        Start_duration = 0
+    check_folder_exists(image_folder)
+    check_folder_exists(audio_folder)
+    check_file_exists(script_path)
+    check_file_exists(font_path)
+    
+    images = get_files(image_folder, ('.jpg', '.png'))
+    audio_files = get_files(audio_folder, ('.mp3', '.wav'))
+    subtitles = json_extract(script_path)
+    raw_clips = []
+    audio_durations = []
+    Start_duration = 0
+    
+    # Creating the intro clip and appending it to raw clips
+    
+    path_to_background = "resources/Intro/intro.png"
+    check_file_exists(path_to_background)
+    font_path = "Samples/font/font.ttf"
+    check_file_exists(font_path)
+    topic = extract_topic_from_json(script_path)
+    intro_clip = create_intro_clip(path_to_background, duration=5, topic=topic, font_path=font_path)
+    raw_clips.append(intro_clip)
+    
+    # Create different clips with audio
+    for img, audio in zip(images,audio_files):
+        audio_clip = AudioFileClip(audio)
+        image_clip = ImageClip(img).with_duration(audio_clip.duration).with_audio(audio_clip)
+        # Debug Text for subtitle synchronisation:
+        # print(f"Start : {Start_duration}")
+        # print(f"End : {audio_clip.duration+Start_duration}")
+        audio_durations.append(audio_clip.duration)
+        print(f"Video Clip no. {images.index(img)+1} successfully created")
+        Start_duration += audio_clip.duration
+        image_clip = add_effects(image_clip)
+        raw_clips.append(image_clip)            
+    
+    #creating the outro clip appending it to raw clips  
+    outro_text = "Thank you for watching! Made by ForgeTube team."
+    outro_clip = create_intro_clip(path_to_background, duration=5, topic=outro_text, font_path=font_path)
+    raw_clips.append(outro_clip)
+    #     Store individual clips without subtitles for preview / debug 
+    #     clip = None
+    #     clip = CompositeVideoClip(img)
+    #     clip.write_videofile(f"samples/raw/{raw_clips.index(image_clip)+1}.mp4",fps = 1,threads = os.cpu_count())
+    
+    video = concatenate_videoclips(raw_clips, method="compose")
+    
+    '''
+    The following part of the code fixes all the below mentioned issues and their following fixes :
+    FIXME: 1. Subtitles are not properly synchronised with the audio.
+    FIX: Each subtitle text is paired with the corresponding audio. Duration of the text is kept same as the duration of the audio.
+    FIXME: 2. If the entire text is shown at once, then it doesn't fit.
+    FIX: Allows a maximum number of 10 words to be shown at once, rest of the text is divided into chunks, each chunk is set to an
+    equivalent duration.
+    Where duration of the chunk = Total duration of the audio * (Chunk_Size / Total Number of words)
+    WARNING: Due to some rounding errors and division errors with floats, some chunks are not perfectly synchronised.         
+    FIXME 3. Subtitles do not appear at the right position in the video. Preferable position is Vertical : bottom, Horizontal = Center,
+    FIX : `SubtitleClip` was causing problems so, used `TextClip` instead.
+    FIXME 4. When subtitles were added to each clip one by one, and all clips later concatenated, an error occurred if images were 
+    of different dimensions, where the aspect ratio of the final video was messed up.
+    FIX: Make it such that concatenation is done only on the image clips and composite video clip is added later on with the 
+    '''
+    if with_subtitles == True:
+        Start_duration = 5
+        subtitle_clips = []
+        chunk = ''
+        chunks = []
+        chunk_duration = 0
+        chunk_durations = []
+        chunk_size = 10
+        for text,duration in zip(subtitles,audio_durations):
+            words = text.split()
+            if len(words) > chunk_size:
+                for i in range(0,len(words),chunk_size):
+                    chunk = " ".join(words[i : (i+chunk_size if i < len(words)-1 else len(words)-1)])
+                    chunks.append(chunk)
+                    chunk_duration = duration * (len(chunk.split())/len(words))
+                    chunk_durations.append(chunk_duration)
+            else:
+                chunks.append(text)
+                chunk_durations.append(duration)
+        # For Debugging:
+        # for i in chunks:
+            # print(f"Index :{chunks.index(i)}, Text: {i}, Word Count: {len(i.split())}")
+        # print(chunk_durations)
+        for subtitle,duration in zip(chunks,chunk_durations):
+            subtitle_clip=TextClip(text=subtitle,
+                                    font=font_path, 
+                                    color='white', 
+                                    bg_color='black', 
+                                    size=(1000, 100),
+                                    method='caption',
+                                    text_align = "center",
+                                    horizontal_align = "center"
+                                    ).with_duration(duration).with_start(Start_duration).with_position('bottom')
+            subtitle_clips.append(subtitle_clip)
+            # For Debugging :
+            # print(f"Subtitle Clip no. {chunks.index(subtitle)+1} successfully created")
+            Start_duration += duration
+        subtitle_clips.insert(0,video)
+        final_video = CompositeVideoClip(subtitle_clips)
+    else:
+        final_video = video
+    final_video.write_videofile(output_file, fps=24,threads = os.cpu_count())
+    print(f"Video created successfully: {output_file}")
         
-        #creating the intro clip and appending it to raw clips
-        path_to_background = "Samples/Intro/intro.jpg"
-        font_path = "Samples/font/font.ttf"
-        topic = extract_topic_from_json(script_path)
-        intro_clip = create_intro_clip(path_to_background, duration=5, topic=topic, font_path=font_path)
-        raw_clips.append(intro_clip)
-        
-        # Create different clips with audio
-        for img, audio in zip(images,audio_files):
-            audio_clip = AudioFileClip(audio)
-            image_clip = ImageClip(img).with_duration(audio_clip.duration).with_audio(audio_clip)
-            # Debug Text for subtitle synchronisation:
-            # print(f"Start : {Start_duration}")
-            # print(f"End : {audio_clip.duration+Start_duration}")
-            audio_durations.append(audio_clip.duration)
-            print(f"Video Clip no. {images.index(img)+1} successfully created")
-            Start_duration += audio_clip.duration
-            image_clip = add_effects(image_clip)
-            raw_clips.append(image_clip)            
-        
-        #creating the outro clip appending it to raw clips  
-        outro_text = "Thank you for watching! Made by ForgeTube team."
-        outro_clip = create_intro_clip(path_to_background, duration=5, topic=outro_text, font_path=font_path)
-        raw_clips.append(outro_clip)
-        #     Store individual clips without subtitles for preview / debug 
-        #     clip = None
-        #     clip = CompositeVideoClip(img)
-        #     clip.write_videofile(f"samples/raw/{raw_clips.index(image_clip)+1}.mp4",fps = 1,threads = os.cpu_count())
-        
-        video = concatenate_videoclips(raw_clips, method="compose")
-        
-        '''
-        The following part of the code fixes all the below mentioned issues and their following fixes :
-        FIXME: 1. Subtitles are not properly synchronised with the audio.
-        FIX: Each subtitle text is paired with the corresponding audio. Duration of the text is kept same as the duration of the audio.
-        FIXME: 2. If the entire text is shown at once, then it doesn't fit.
-        FIX: Allows a maximum number of 10 words to be shown at once, rest of the text is divided into chunks, each chunk is set to an
-        equivalent duration.
-        Where duration of the chunk = Total duration of the audio * (Chunk_Size / Total Number of words)
-        WARNING: Due to some rounding errors and division errors with floats, some chunks are not perfectly synchronised.         
-        FIXME 3. Subtitles do not appear at the right position in the video. Preferable position is Vertical : bottom, Horizontal = Center,
-        FIX : `SubtitleClip` was causing problems so, used `TextClip` instead.
-        FIXME 4. When subtitles were added to each clip one by one, and all clips later concatenated, an error occurred if images were 
-        of different dimensions, where the aspect ratio of the final video was messed up.
-        FIX: Make it such that concatenation is done only on the image clips and composite video clip is added later on with the 
-        '''
-        if with_subtitles == True:
-            Start_duration = 5
-            subtitle_clips = []
-            chunk = ''
-            chunks = []
-            chunk_duration = 0
-            chunk_durations = []
-            chunk_size = 10
-            for text,duration in zip(subtitles,audio_durations):
-                words = text.split()
-                if len(words) > chunk_size:
-                    for i in range(0,len(words),chunk_size):
-                        chunk = " ".join(words[i : (i+chunk_size if i < len(words)-1 else len(words)-1)])
-                        chunks.append(chunk)
-                        chunk_duration = duration * (len(chunk.split())/len(words))
-                        chunk_durations.append(chunk_duration)
-                else:
-                    chunks.append(text)
-                    chunk_durations.append(duration)
-            # For Debugging:
-            # for i in chunks:
-                # print(f"Index :{chunks.index(i)}, Text: {i}, Word Count: {len(i.split())}")
-            # print(chunk_durations)
-            for subtitle,duration in zip(chunks,chunk_durations):
-                subtitle_clip=TextClip(text=subtitle,
-                                        font=font_path, 
-                                        color='white', 
-                                        bg_color='black', 
-                                        size=(1000, 100),
-                                        method='caption',
-                                        text_align = "center",
-                                        horizontal_align = "center"
-                                        ).with_duration(duration).with_start(Start_duration).with_position('bottom')
-                subtitle_clips.append(subtitle_clip)
-                # For Debugging :
-                # print(f"Subtitle Clip no. {chunks.index(subtitle)+1} successfully created")
-                Start_duration += duration
-            subtitle_clips.insert(0,video)
-            final_video = CompositeVideoClip(subtitle_clips)
-        else:
-            final_video = video
-        final_video.write_videofile(output_file, fps=24,threads = os.cpu_count())
-        print(f"Video created successfully: {output_file}")
-        
-    except FileNotFoundError:
-        if not images:
-            raise FileNotFoundError("No images found in the specified folder.")
-        if not audio_files:
-            raise FileNotFoundError("No audio files found in the specified folder.")
-        if not subtitles:
-            raise FileNotFoundError("No subtitles found in the specified json. ")
+    # except FileNotFoundError:
+    #     if not images:
+    #         raise FileNotFoundError("No images found in the specified folder.")
+    #     if not audio_files:
+    #         raise FileNotFoundError("No audio files found in the specified folder.")
+    #     if not subtitles:
+    #         raise FileNotFoundError("No subtitles found in the specified json. ")
         
         
 def create_complete_srt(script_folder :str, 
@@ -425,13 +448,13 @@ def create_complete_srt(script_folder :str,
 
         
 # if __name__ == "__main__":
-#     image_folder = "Samples/Images/"  
-#     audio_folder = "Samples/Audio/"  
-#     script_path = "Samples/templates/" 
+#     image_folder = "Samples/Images/brain rot"  
+#     audio_folder = "Samples/Audio/brain rot/"  
+#     script_path = "Samples/templates/brain_rot.json" 
 #     font_path = "Samples/font/font.ttf"
-#     sub_output_file = "samples/subtitles/cats.srt/"
+#     sub_output_file = "samples/subtitles/.srt/brain_rot.srt"
 #     topic = extract_topic_from_json(script_path)
-#     output_file = f"Samples/Videos/cats.mp4"
+#     output_file = f"Samples/Videos/brain_rot.mp4"
     
 #     create_complete_srt(script_folder=script_path,
 #                         audio_file_folder=audio_folder,

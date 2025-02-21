@@ -1,3 +1,11 @@
+# import modal
+
+# image = modal.Image.debian_slim().pip_install(
+#     "pydub>=0.25.1",
+#     "kokoro>=0.7.16",
+#     "soundfile>=0.13.1"
+# )
+# app = modal.App(name="Generate Audio")
 from pydub import AudioSegment
 import json
 import io
@@ -6,7 +14,7 @@ import os
 from kokoro.pipeline import KPipeline
 
 def generate_audio(script_data):
-    pipeline = KPipeline(lang_code='en')
+    pipeline = KPipeline(lang_code="b")
         
     all_audio = []
     for segment in script_data["audio_script"]:
@@ -29,22 +37,23 @@ def merge_audio(audio_path,audio_bytes_list):
     # Save segments locally
     audio_files = []
     for idx, audio_bytes in enumerate(audio_bytes_list):
-        output_path = audio_path + f"/segment_{idx}.wav"
+        output_path = f"{audio_path}/segment_{idx}.wav"
         with open(output_path, "wb") as f:
             f.write(audio_bytes)
         audio_files.append(output_path)
+        print(f"Audio file: {idx} successfully saved at : {output_path}")
     
-    # Merge audio files
-    master_audio = AudioSegment.empty()
-    for file in audio_files:
-        master_audio += AudioSegment.from_wav(file)
+    # Merge audio files (not really needed)
+    # master_audio = AudioSegment.empty()
+    # for file in audio_files:
+    #     master_audio += AudioSegment.from_wav(file)
     
     # Export final file
-    master_output_path = "master_output.wav"
-    master_audio.export(master_output_path, format="wav")
-    return master_output_path
+    # master_output_path = f"{audio_path}/master_output.wav"
+    # master_audio.export(master_output_path, format="wav")
+    # return master_output_path
 
-def main_generate_audio(script_path):
+def main_generate_audio(script_path,audio_path):
     # Load script data
     with open(script_path) as f:
         script_data = json.load(f)
@@ -53,9 +62,9 @@ def main_generate_audio(script_path):
     audio_bytes_list = generate_audio(script_data)
     
     # Merge and save final audio
-    final_path = merge_audio(audio_bytes_list)
+    final_path = merge_audio(audio_path,audio_bytes_list)
     
     print(f"Audio generation complete! Saved as {final_path}")
 
-# if __name__ == "__main__":
-#     main_generate_audio(script_path=)
+if __name__ == "__main__":
+    main_generate_audio(script_path="resources/scripts/script.json",audio_path="resources/audio")
