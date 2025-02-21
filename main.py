@@ -17,7 +17,7 @@ if __name__ == "__main__":
     font_path = "Samples/font/font.ttf"
     
     # 1. Generate the Script
-    generator = VideoScriptGenerator(api_key="AIzaSyDZVpYdGx5F0S1C2iL4W5nCTQmsDxDA7Iw", serp_api_key="98198662e5f8216676a9c5a20b385f38100fca7a27c4a05aee645d173d4bff41")
+    generator = VideoScriptGenerator(api_key="Enter_API_key", serp_api_key="Enter_Serp_API_key")
     
     try:
         topic = input("Enter the topic of the video : "),
