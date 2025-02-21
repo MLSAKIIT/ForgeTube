@@ -279,7 +279,7 @@ def create_video(image_folder :str,
     
     # Creating the intro clip and appending it to raw clips
     
-    path_to_background = "resources/Intro/intro.png"
+    path_to_background = "resources/Intro/intro.jpg"
     check_file_exists(path_to_background)
     font_path = "Samples/font/font.ttf"
     check_file_exists(font_path)
