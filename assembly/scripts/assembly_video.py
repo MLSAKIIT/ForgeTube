@@ -203,9 +203,9 @@ def add_effects(clip):
 
 
 def create_intro_clip(background_image_path, 
-                      duration, 
-                      topic,
-                      font_path):
+                    duration, 
+                    topic,
+                    font_path):
     """
     Create an intro video clip with a background image and centered text.
 
@@ -226,7 +226,7 @@ def create_intro_clip(background_image_path,
 
     # Create a TextClip for the intro text
     text_clip = TextClip(text=topic,
-                        size=(800, 400),
+                        size=(900, 90),
                         method='caption',
                         color="white",
                         font=font_path)
