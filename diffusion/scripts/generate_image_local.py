@@ -14,7 +14,7 @@ from io import BytesIO
 # app = modal.App(name="finalgen_app")
 
 # @app.function(image=image, gpu="A10G")
-def generate_image(prompt, negative_prompt="", steps=50, guidance_scale=12, width=1920, height=1080, seed=None):
+def generate_image(prompt, negative_prompt="", steps=50, guidance_scale=9, width=1920, height=1080, seed=None):
     import torch
     # from diffusers import StableDiffusionPipeline
     from diffusers import DiffusionPipeline
@@ -81,7 +81,8 @@ def main_generate_image(script_path,images_output_path):
             timestamp = scene.get("timestamp", f"{idx:03d}")
             negative_prompt = scene.get("negative_prompt", "")
             steps = scene.get("steps", 50)
-            guidance_scale = scene.get("guidance_scale", 12)
+            # guidance_scale = scene.get("guidance_scale", 12)
+            guidance_scale = 9
             # width = scene.get("width", 1024)
             width = 1920
             # height = scene.get("height", 576)
