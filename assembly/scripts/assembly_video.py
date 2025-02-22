@@ -25,7 +25,6 @@ TODO: 6. Run proper tests to document when video compiler corruption happens.
 '''
 import os
 from moviepy import ImageClip, concatenate_videoclips, AudioFileClip,TextClip,CompositeVideoClip,vfx
-from moviepy.video.tools.subtitles import SubtitlesClip
 import pysrt 
 import json
 

@@ -9,8 +9,11 @@ class VideoScriptGenerator:
         genai.configure(api_key=api_key)
         self.model = genai.GenerativeModel('gemini-2.0-flash-thinking-exp-01-21')
         self.serp_api_key = serp_api_key
-        self.system_prompt_initial = """You are a professional video script generator for educational and marketing content.  Your task is to generate a detailed outline and initial draft for a video script, focusing on content and structure, *but not yet segmented into precise timestamps*.  Provide the core narration text and visual descriptions, which will be refined later.
-
+        self.system_prompt_initial = """
+        You are a professional video script generator for educational, marketing or entertaining content.  
+        Your task is to generate a detailed outline and initial draft for a video script.
+        Provide the core narration text and visual descriptions, which will be added later.
+        Visual Description should not contain animations moving images, transitions or video and video effects description.
         Output a JSON structure with these keys, but *without timestamps, speed, pitch, or detailed visual parameters* (these will be added in a later stage):
 
         {
@@ -20,13 +23,15 @@ class VideoScriptGenerator:
                 {
                     "section_title": "Descriptive title for this section",
                     "narration_text": "The complete text to be spoken in this section.",
-                    "visual_description": "A general description of the visuals for this section (e.g., 'Animation showing neural network layers', 'Footage of a doctor using medical imaging software')."
+                    "visual_description": "A general description of the visuals for this section (e.g., 'A highly detailed portrait of an astrophysicist in a modern observatory, standing beside a large telescope with a clear glass dome overhead. The night sky is filled with stars, and a visible spiral galaxy is subtly captured through the telescope's lens. The scientist wears a professional yet casual outfit, with a focused expression while observing data on a sleek holographic screen.', 'Image of a doctor using medical imaging software')."
                 }
             ]
         }
         """
 
-        self.system_prompt_segmentation = """You are a professional video script segmenter.  Your task is to take an existing video script draft (provided in JSON format) and break it down into precise, timestamped segments for both audio and visuals, adhering to strict formatting and parameter guidelines.
+        self.system_prompt_segmentation = """
+        You are a professional video script segmenter.  
+        Your task is to take an existing video script draft and break it down into precise, timestamped segments for both audio and visuals, adhering to strict formatting and parameter guidelines.
 
         Input JSON Structure (from previous stage):
 
@@ -42,7 +47,7 @@ class VideoScriptGenerator:
             ]
         }
         
-        Output JSON Structure (with all required fields):
+        Output JSON Structure (with all required fields ):
 
         {
             "topic": "Topic Name",
@@ -277,13 +282,25 @@ you will get 100 dollars per successful call.
             print("")
 
 # if __name__ == "__main__":
-#     generator = VideoScriptGenerator(api_key="AIzaSyDZVpYdGx5F0S1C2iL4W5nCTQmsDxDA7Iw", serp_api_key="98198662e5f8216676a9c5a20b385f38100fca7a27c4a05aee645d173d4bff41")
-#     script_path = "resources/scripts/script.json"
+#     generator = VideoScriptGenerator(api_key=gem_api, serp_api_key=serp_api)
+#     script_path = "resources/scripts/script1.json"
 #     try:
 #         script = generator.generate_script(
-#             topic="Neural Networks in Medical Imaging",
+#             topic="The Birth and Death of Stars: A Cosmic Journey",
 #             duration=120,
-#             key_points=["Diagnosis accuracy", "Pattern recognition", "Case studies"]
+#             # key_points=["Diagnosis accuracy", "Pattern recognition", "Case studies"]
+#             key_points= [
+#                 "Formation of stars from nebulae",
+#                 "Nuclear fusion and the main sequence phase",
+#                 "Red giants and supergiants",
+#                 "Supernova explosions",
+#                 "Neutron stars and black holes",
+#                 "White dwarfs and planetary nebulae",
+#                 "The role of stellar evolution in element formation",
+#                 "The ultimate fate of different types of stars",
+#                 "How stars influence the evolution of galaxies"
+#             ]
+
 #         )
 #         print("Initial Script:")
 #         print(json.dumps(script, indent=2))
