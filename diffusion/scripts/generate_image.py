@@ -14,7 +14,7 @@ image = modal.Image.debian_slim().pip_install(
 app = modal.App(name="finalgen_app")
 
 @app.function(image=image, gpu="A10G")
-def generate_image(prompt, negative_prompt="", steps=50, guidance_scale=12, width=1980, height=1080, seed=None):
+def generate_image(prompt, negative_prompt="", steps=50, guidance_scale=9, width=1980, height=1080, seed=None):
     import torch
     from diffusers import StableDiffusionPipeline
 
