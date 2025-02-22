@@ -70,41 +70,41 @@ def main_generate_image(script_path,images_output_path):
     
 
 # GENERATING THE IMAGES 
+    with modal.enable_output():
+        with app.run():
+            # Looping Through the Scenes
+            for idx, scene in enumerate(data["visual_script"]):
+                try:
+                    prompt = scene["prompt"]
+                    timestamp = scene.get("timestamp", f"{idx:03d}")
+                    negative_prompt = scene.get("negative_prompt", "")
+                    steps = scene.get("steps", 50)
+                    # guidance_scale = scene.get("guidance_scale", 12)
+                    guidance_scale = 9
 
-    with app.run():
-        # Looping Through the Scenes
-        for idx, scene in enumerate(data["visual_script"]):
-            try:
-                prompt = scene["prompt"]
-                timestamp = scene.get("timestamp", f"{idx:03d}")
-                negative_prompt = scene.get("negative_prompt", "")
-                steps = scene.get("steps", 50)
-                # guidance_scale = scene.get("guidance_scale", 12)
-                guidance_scale = 9
+                    # width = scene.get("width", 1024)
+                    width = 1920
+                    # height = scene.get("height", 576)
+                    height = 1080
+                    seed = scene.get("seed", None)
 
-                # width = scene.get("width", 1024)
-                width = 1920
-                # height = scene.get("height", 576)
-                height = 1080
-                seed = scene.get("seed", None)
+                    scene_id = timestamp.replace(":", "-")
 
-                scene_id = timestamp.replace(":", "-")
-
-                image_data = generate_image.remote(prompt, negative_prompt, steps, guidance_scale, width, height, seed)
+                    image_data = generate_image.remote(prompt, negative_prompt, steps, guidance_scale, width, height, seed)
 
 
-# SAVING THE IMAGES IN THE OUTPUT DIRECTORY
+    # SAVING THE IMAGES IN THE OUTPUT DIRECTORY
 
-                file_path = os.path.join(images_output_path, f"scene_{scene_id}.png")
-                with open(file_path, "wb") as f:
-                    f.write(image_data)
+                    file_path = os.path.join(images_output_path, f"scene_{scene_id}.png")
+                    with open(file_path, "wb") as f:
+                        f.write(image_data)
 
-                print(f"Saved: {file_path}")
+                    print(f"Saved: {file_path}")
 
-                time.sleep(2)
+                    time.sleep(2)
 
-            except Exception as e:
-                print(f"Error processing scene {idx}: {e}")
+                except Exception as e:
+                    print(f"Error processing scene {idx}: {e}")
 
     print("Done.")
 

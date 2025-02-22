@@ -12,7 +12,9 @@ TODO: 4. All gpu related tasks must be performed on modal. Works
 '''
 if __name__ == "__main__":
     # Update folder paths as needed.
-    script_path = "resources/scripts/script3.json"
+    script_path = "resources/scripts/"
+    os.makedirs(script_path, exist_ok=True)
+    script_path += "script.json"
     images_path = "resources/images/"
     os.makedirs(images_path, exist_ok=True)
     audio_path = "resources/audio/"

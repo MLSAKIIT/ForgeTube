@@ -1,6 +1,6 @@
 from diffusion.scripts.generate_script import VideoScriptGenerator
 import json
-from diffusion.scripts.generate_image_local import main_generate_image
+from diffusion.scripts.generate_image import main_generate_image
 from tts.scripts.generate_audio import main_generate_audio
 from assembly.scripts.assembly_video import create_video,create_complete_srt,extract_topic_from_json
 import os
@@ -12,7 +12,9 @@ TODO: 4. All gpu related tasks must be performed on modal. Works
 '''
 if __name__ == "__main__":
     # Update folder paths as needed.
-    script_path = "resources/scripts/script3.json"
+    script_path = "resources/scripts/"
+    os.makedirs(script_path, exist_ok=True)
+    script_path += "script.json"
     images_path = "resources/images/"
     os.makedirs(images_path, exist_ok=True)
     audio_path = "resources/audio/"
@@ -20,9 +22,9 @@ if __name__ == "__main__":
     font_path = "Samples/font/font.ttf"
     
     # 1. Generate the Script
-    gem_api = ""
-    serp_api = "Enter your Sper API Key here"
-    if not gem_api or serp_api:
+    gem_api = "AIzaSyA0BNJxb829i-k__KL2iy6udrJ5YluULrE"
+    serp_api = "1b4696f1263c41648574719f677975ccde7c4048a9c08753a25aec96df030de6"
+    if (not gem_api) or (not serp_api):
         raise ValueError("API Key not provided !\n Please Create your api key at : \n Serp APi : https://serpapi.com \n Gemini API : https://aistudio.google.com/apikey")
     generator = VideoScriptGenerator(api_key=gem_api,serp_api_key=serp_api)
     
@@ -32,6 +34,7 @@ if __name__ == "__main__":
         input_string = input("Enter a list of key points separated by commas : ")
         key_points = input_string.split(",") 
         key_points = [word.strip() for word in key_points]
+        print("Starting Script Generation ... ")
         script = generator.generate_script(
             # topic="Neural Networks in Medical Imaging",
             # duration=90,
@@ -49,15 +52,19 @@ if __name__ == "__main__":
             generator.save_script(refined_script, script_path)
         else:
             generator.save_script(script, script_path)
+            print("Script Generation Done.")
     except Exception as e:
         print(f"Script generation failed: {str(e)}")
         
     # 2. Generate the images
+    print("Staring Image Generation ...")
     main_generate_image(script_path,images_path)
+    print("Image Generation Done.")
     
     # 3. Generate the audio 
+    print("Starting Audio Generation ...")
     main_generate_audio(script_path,audio_path)
-    
+    print("Audio Generation Done.")
     # Video Assembly
     topic = extract_topic_from_json(script_path)
     topic = "_".join(topic.split(' ')[:1])
@@ -65,9 +72,12 @@ if __name__ == "__main__":
     video_file = f"{topic}.mp4"
     
     # 5. Create subtitles in a .srt file
+    print("Creating .srt subtitle file")
     create_complete_srt(script_folder = script_path,
                         audio_file_folder = audio_path,
                         outfile_path = sub_output_file,
                         chunk_size = 10)
+    
     # 6. Start Video Assembly
+    print("Starting video assembly ...")
     create_video(images_path, audio_path, script_path, font_path, video_file, with_subtitles=True)

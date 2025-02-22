@@ -51,8 +51,8 @@ def generate_image(prompt, negative_prompt="", steps=50, guidance_scale=9, width
 
 # PATH TO JSON FILE
 
-script_path = "resources/scripts/script.json"
-images_output_path = "resources/images/"
+# script_path = "resources/scripts/script.json"
+# images_output_path = "resources/images/"
 # os.makedirs(output_path, exist_ok=True)
 
 

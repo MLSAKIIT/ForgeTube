@@ -23,8 +23,7 @@ class VideoScriptGenerator:
                 {
                     "section_title": "Descriptive title for this section",
                     "narration_text": "The complete text to be spoken in this section.",
-                    "visual_description": "A general description of the visuals for this section (e.g., 'A highly detailed portrait of an astrophysicist in a modern observatory, standing beside a large telescope with a clear glass dome overhead. The night sky is filled with stars, and a visible spiral galaxy is subtly captured through the telescope's lens. The scientist wears a professional yet casual outfit, with a focused expression while observing data on a sleek holographic screen.', 'Image of a doctor using medical imaging software')."
-                }
+                    "visual_description": "A general description of the visuals for this section."
             ]
         }
         """
@@ -32,6 +31,18 @@ class VideoScriptGenerator:
         self.system_prompt_segmentation = """
         You are a professional video script segmenter.  
         Your task is to take an existing video script draft and break it down into precise, timestamped segments for both audio and visuals, adhering to strict formatting and parameter guidelines.
+        Rules for Segmentation:
+        
+        1. Break down the `narration_text` and `visual_description` from the input JSON into smaller segments, each approximately 5-10 seconds long.
+        2. Generate timestamps ("00:00", "00:05", "00:10", etc.) for each segment in both `audio_script` and `visual_script`.
+        3. Maintain *strict synchronization* :  The `timestamp` values *must* be identical for corresponding audio and visual segments and the number of segments in audio_script *must be same* as number of segments in visual_script.
+        4. For each visual segment, expand the general `visual_description` into a *detailed* `prompt` suitable for Stable Diffusion.  Include a corresponding `negative_prompt`. 
+        5. Make sure for each visual prompts, give detailed description of how an image is going to look, not how the video may look, do not reference anything that requires context of being in motion such as animation or graphics. Do not ask to generate abstract art or too complex shapes.
+        6. Choose appropriate values for `speaker`, `speed`, `pitch`, and `emotion` for each audio segment.
+        7. Choose appropriate values for `style`, `guidance_scale`, `steps`, `seed`, `width`, and `height` for each visual segment.
+        8. Ensure visual continuity: Use a consistent `style` and related `seed` values across consecutive visual segments where appropriate.  Vary the seed to introduce changes, but maintain a logical flow.
+        9. Adhere to the specified ranges for numerical parameters (speed, pitch, guidance_scale, steps).
+        10. Validate JSON structure before output with the example_json given.
 
         Input JSON Structure (from previous stage):
 
@@ -63,30 +74,18 @@ class VideoScriptGenerator:
             "visual_script": [{
                 "timestamp_start": "00:00",
                 "timestamp_end": "00:05",
-                "prompt": "Detailed Stable Diffusion prompt",
-                "negative_prompt": "Low quality elements to avoid such as abstract images, shapes that dont make sense or weird faces",
+                "prompt": "Detailed Stable Diffusion prompt, eg. (e.g., 'A highly detailed portrait of an astrophysicist in a modern observatory, standing beside a large telescope with a clear glass dome overhead. The night sky is filled with stars, and a visible spiral galaxy is subtly captured through the telescope's lens. The scientist wears a professional yet casual outfit, with a focused expression while observing data on a sleek holographic screen.', 'Image of a doctor using medical imaging software')."
+                # "negative_prompt": "Low quality elements to avoid such as abstract images, shapes that dont make sense or weird faces, imagery of moving objects, montages of multiple images, abstract shapes, complex designs ",
                 "style": "realistic|cinematic|hyperrealistic|fantasy|scientific",
-                "guidance_scale": 11.0-14.0,
-                "steps": 50-100,
+                "guidance_scale": 7-9,
+                "steps": 50,
                 "seed": 6-7 digit integer,
                 "width": 1024,
                 "height": 576
             }]
         }
 
-        Rules for Segmentation:
-        
-        1. Break down the `narration_text` and `visual_description` from the input JSON into smaller segments, each approximately 5-10 seconds long.
-        2. Generate timestamps ("00:00", "00:05", "00:10", etc.) for each segment in both `audio_script` and `visual_script`.
-        3. Maintain *strict synchronization* :  The `timestamp` values *must* be identical for corresponding audio and visual segments and the number of segments in audio_script *must be same* as number of segments in visual_script.
-        4. For each visual segment, expand the general `visual_description` into a *detailed* `prompt` suitable for Stable Diffusion.  Include a corresponding `negative_prompt`. 
-        5. Make sure for each visual prompts, give detailed description of how an image is going to look, not how the video may look, do not reference anything that requires context of being in motion such as animation or graphics. Do not ask to generate abstract art or too complex shapes.
-        6. Choose appropriate values for `speaker`, `speed`, `pitch`, and `emotion` for each audio segment.
-        7. Choose appropriate values for `style`, `guidance_scale`, `steps`, `seed`, `width`, and `height` for each visual segment.
-        8. Ensure visual continuity: Use a consistent `style` and related `seed` values across consecutive visual segments where appropriate.  Vary the seed to introduce changes, but maintain a logical flow.
-        9. Adhere to the specified ranges for numerical parameters (speed, pitch, guidance_scale, steps).
-        10. Validate JSON structure before output
-     ex1_json = {
+     example_json = {
   "topic": "How to Drive a Car",
   "description": "A step-by-step guide on driving a car safely and confidently.",
   "audio_script": [
