@@ -19,7 +19,7 @@ if __name__ == "__main__":
     os.makedirs(images_path, exist_ok=True)
     audio_path = "resources/audio/"
     os.makedirs(audio_path, exist_ok=True)
-    font_path = "Samples/font/font.ttf"
+    font_path = "resources/font/font.ttf"
     
     # 1. Generate the Script
     gem_api = "AIzaSyA0BNJxb829i-k__KL2iy6udrJ5YluULrE"

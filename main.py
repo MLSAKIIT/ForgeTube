@@ -19,12 +19,12 @@ if __name__ == "__main__":
     os.makedirs(images_path, exist_ok=True)
     audio_path = "resources/audio/"
     os.makedirs(audio_path, exist_ok=True)
-    font_path = "Samples/font/font.ttf"
+    font_path = "resources/font/font.ttf"
     
     # 1. Generate the Script
     gem_api = "Enter your Gemini API key here"
     serp_api = "Enter your Sper API Key here"
-    if not gem_api or serp_api:
+    if (not gem_api) or (not serp_api):
         raise ValueError("API Key not provided !\n Please Create your api key at : \n Serp APi : https://serpapi.com \n Gemini API : https://aistudio.google.com/apikey")
     generator = VideoScriptGenerator(api_key=gem_api,serp_api_key=serp_api)    
     try:
