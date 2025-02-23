@@ -1,6 +1,6 @@
 from diffusion.scripts.generate_script import VideoScriptGenerator
 import json
-from diffusion.scripts.generate_image import main_generate_image
+from diffusion.scripts.generate_image_local import main_generate_image
 from tts.scripts.generate_audio import main_generate_audio
 from assembly.scripts.assembly_video import create_video,create_complete_srt,extract_topic_from_json
 import os

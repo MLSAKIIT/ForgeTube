@@ -13,8 +13,8 @@ TODO: 4. All gpu related tasks must be performed on modal. Works
 if __name__ == "__main__":
     # Update folder paths as needed.
     script_path = "resources/scripts/"
-    os.makedirs(script_path, exist_ok=True)
-    script_path += "script.json"
+    os.makedirs(script_path, exist_ok=True) # creates the folders if not made already
+    script_path += "script.json" # Name of the script file
     images_path = "resources/images/"
     os.makedirs(images_path, exist_ok=True)
     audio_path = "resources/audio/"
@@ -35,9 +35,6 @@ if __name__ == "__main__":
         key_points = [word.strip() for word in key_points]
         print("Starting Script Generation ... ")
         script = generator.generate_script(
-            # topic="Neural Networks in Medical Imaging",
-            # duration=90,
-            # key_points=["Diagnosis accuracy", "Pattern recognition", "Case studies"]
             topic,duration,key_points
         )
         print("Initial Script: ")
@@ -64,13 +61,13 @@ if __name__ == "__main__":
     print("Starting Audio Generation ...")
     main_generate_audio(script_path,audio_path)
     print("Audio Generation Done.")
-    # Video Assembly
+    # # Video Assembly
     topic = extract_topic_from_json(script_path)
-    # topic = "_".join(topic.split(" ")[:2])
-    # topic = "MLSA_KIIT"
+
     import re
     topic = re.sub(r"[^A-Za-z0-9\s]+", " ",topic)
     topic = re.sub(r"\s+", "_", topic)
+    topic = topic[:100]  # Take only first 100 characters
     sub_output_file = f"resources/subtitles/{topic}.srt"
     video_file = f"resources/video/{topic}.mp4"
     

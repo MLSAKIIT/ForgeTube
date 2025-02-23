@@ -281,24 +281,25 @@ you will get 100 dollars per successful call.
             print("")
 
 # if __name__ == "__main__":
-#     generator = VideoScriptGenerator(api_key=gem_api, serp_api_key=serp_api)
-#     script_path = "resources/scripts/script1.json"
+#     generator = VideoScriptGenerator(api_key="Gemini API Key", 
+#                                     serp_api_key="Serp API Key")
+#     script_path = "resources/scripts/script.json"
 #     try:
 #         script = generator.generate_script(
-#             topic="The Birth and Death of Stars: A Cosmic Journey",
-#             duration=120,
+#             topic="Role of Reinforcement learning in finding EXO planets",
+#             duration=60,
 #             # key_points=["Diagnosis accuracy", "Pattern recognition", "Case studies"]
-#             key_points= [
-#                 "Formation of stars from nebulae",
-#                 "Nuclear fusion and the main sequence phase",
-#                 "Red giants and supergiants",
-#                 "Supernova explosions",
-#                 "Neutron stars and black holes",
-#                 "White dwarfs and planetary nebulae",
-#                 "The role of stellar evolution in element formation",
-#                 "The ultimate fate of different types of stars",
-#                 "How stars influence the evolution of galaxies"
-#             ]
+#             # key_points= [
+#             #     "Formation of stars from nebulae",
+#             #     "Nuclear fusion and the main sequence phase",
+#             #     "Red giants and supergiants",
+#             #     "Supernova explosions",
+#             #     "Neutron stars and black holes",
+#             #     "White dwarfs and planetary nebulae",
+#             #     "The role of stellar evolution in element formation",
+#             #     "The ultimate fate of different types of stars",
+#             #     "How stars influence the evolution of galaxies"
+#             # ]
 
 #         )
 #         print("Initial Script:")
