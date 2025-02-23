@@ -43,7 +43,7 @@ if __name__ == "__main__":
     os.makedirs(script_path,exist_ok=True)
     script_path += "script.json" # Name of the script file
     # 1. Generate the Script
-    gem_api = ""
+    gem_api = "Enter your Gemini API key here"
     serp_api = "Enter your Serp API key here"
     if (not gem_api) or (not serp_api):
         raise ValueError("API Key not provided !\n Please Create your api key at : \n Serp APi : https://serpapi.com \n Gemini API : https://aistudio.google.com/apikey")
