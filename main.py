@@ -40,11 +40,10 @@ if __name__ == "__main__":
     
     create_or_check_folder(images_path)
     create_or_check_folder(audio_path)
-    create_or_check_folder(script_path)
-
+    os.makedirs(script_path,exist_ok=True)
     script_path += "script.json" # Name of the script file
     # 1. Generate the Script
-    gem_api = "Enter your Gemini API Key here"
+    gem_api = ""
     serp_api = "Enter your Serp API key here"
     if (not gem_api) or (not serp_api):
         raise ValueError("API Key not provided !\n Please Create your api key at : \n Serp APi : https://serpapi.com \n Gemini API : https://aistudio.google.com/apikey")
@@ -90,11 +89,13 @@ if __name__ == "__main__":
     topic = re.sub(r"[^A-Za-z0-9\s]+", " ",topic)
     topic = re.sub(r"\s+", "_", topic)
     topic = topic[:100]  # Take only first 100 characters
+    os.makedirs("resources/video",exist_ok=True)
+    os.makedirs("resources/subtitles",exist_ok=True)
     sub_output_file = f"resources/subtitles/{topic}.srt"
     video_file = f"resources/video/{topic}.mp4"
     
     # 5. Create subtitles in a .srt file
-    print("Creating .srt subtitle file")
+    print("Creating .srt subtitle file ...")
     create_complete_srt(script_folder = script_path,
                         audio_file_folder = audio_path,
                         outfile_path = sub_output_file,
