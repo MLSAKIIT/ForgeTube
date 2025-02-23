@@ -71,6 +71,7 @@ This project demonstrates the potential of combining multiple AI technologies to
 
 
 ## Steps for deployment :
+Clone the repo on your system, using : `git clone https://github.com/MLSAKIIT/ForgeTube.git`
 ### 1. Using UV for Python Package Management
 
 For more information, visit the [UV Documentation](https://docs.astral.sh/uv/).
