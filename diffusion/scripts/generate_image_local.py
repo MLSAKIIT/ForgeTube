@@ -4,25 +4,14 @@ import os
 import time
 from io import BytesIO
 
-# image = modal.Image.debian_slim().pip_install(
-#     "diffusers",
-#     "torch",
-#     "transformers",
-#     "accelerate"
-# )
 
-# app = modal.App(name="finalgen_app")
-
-# @app.function(image=image, gpu="A10G")
 def generate_image(prompt, negative_prompt="", steps=50, guidance_scale=9, width=1920, height=1080, seed=None):
     import torch
-    # from diffusers import StableDiffusionPipeline
     from diffusers import DiffusionPipeline
 
 
 # LOADS THE DIFFUSION PIPELINE
 
-    # pipe = StableDiffusionPipeline.from_pretrained("runwayml/stab", torch_dtype=torch.float16)
     pipe = DiffusionPipeline.from_pretrained("stabilityai/stable-diffusion-xl-base-1.0", 
                                             torch_dtype=torch.float16,
                                             use_safetensors=True, 
@@ -47,14 +36,6 @@ def generate_image(prompt, negative_prompt="", steps=50, guidance_scale=9, width
     img_byte_arr.seek(0)
 
     return img_byte_arr.getvalue()
-
-
-# PATH TO JSON FILE
-
-# script_path = "resources/scripts/script.json"
-# images_output_path = "resources/images/"
-# os.makedirs(output_path, exist_ok=True)
-
 
 # PROVIDE SOURCE TEXT OR PROMPT IN JSON FILE
 
@@ -82,10 +63,8 @@ def main_generate_image(script_path,images_output_path):
             negative_prompt = scene.get("negative_prompt", "")
             steps = scene.get("steps", 50)
             # guidance_scale = scene.get("guidance_scale", 12)
-            guidance_scale = 9
-            # width = scene.get("width", 1024)
+            guidance_scale = 9 # Set to 9 to allow for some room of filling missing elements.
             width = 1920
-            # height = scene.get("height", 576)
             height = 1080
             seed = scene.get("seed", None)
 

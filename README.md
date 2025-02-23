@@ -122,6 +122,7 @@ uv sync
 ### Setting up Modal
 ### Setting up Gemini-Api
 ### Setting up Serp-Api
+### Setting up Kokoro troubleshoot
 
 <!-- Add the rest of the steps to set up gemini and serp api and modal api and finally run the program. -->
 

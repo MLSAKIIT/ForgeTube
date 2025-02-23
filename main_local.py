@@ -22,8 +22,8 @@ if __name__ == "__main__":
     font_path = "resources/font/font.ttf"
     
     # 1. Generate the Script
-    gem_api = "AIzaSyA0BNJxb829i-k__KL2iy6udrJ5YluULrE"
-    serp_api = "1b4696f1263c41648574719f677975ccde7c4048a9c08753a25aec96df030de6"
+    gem_api = "Enter your Gemini API Key here"
+    serp_api = "Enter your Serp API key here"
     if (not gem_api) or (not serp_api):
         raise ValueError("API Key not provided !\n Please Create your api key at : \n Serp APi : https://serpapi.com \n Gemini API : https://aistudio.google.com/apikey")
     generator = VideoScriptGenerator(api_key=gem_api,serp_api_key=serp_api)

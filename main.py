@@ -22,8 +22,8 @@ if __name__ == "__main__":
     font_path = "resources/font/font.ttf"
     
     # 1. Generate the Script
-    gem_api = "Enter your Gemini API key here"
-    serp_api = "Enter your Sper API Key here"
+    gem_api = "Enter your Gemini API Key here"
+    serp_api = "Enter your Serp API key here"
     if (not gem_api) or (not serp_api):
         raise ValueError("API Key not provided !\n Please Create your api key at : \n Serp APi : https://serpapi.com \n Gemini API : https://aistudio.google.com/apikey")
     generator = VideoScriptGenerator(api_key=gem_api,serp_api_key=serp_api)    
@@ -33,6 +33,7 @@ if __name__ == "__main__":
         input_string = input("Enter a list of key points separated by commas : ")
         key_points = input_string.split(",") 
         key_points = [word.strip() for word in key_points]
+        print("Starting Script Generation ... ")
         script = generator.generate_script(
             # topic="Neural Networks in Medical Imaging",
             # duration=90,
@@ -50,21 +51,31 @@ if __name__ == "__main__":
             generator.save_script(refined_script, script_path)
         else:
             generator.save_script(script, script_path)
+            print("Script Generation Done.")
     except Exception as e:
         print(f"Script generation failed: {str(e)}")
         
     # 2. Generate the images
+    print("Staring Image Generation ...")
     main_generate_image(script_path,images_path)
+    print("Image Generation Done.")
     
     # 3. Generate the audio 
+    print("Starting Audio Generation ...")
     main_generate_audio(script_path,audio_path)
-    
+    print("Audio Generation Done.")
     # Video Assembly
     topic = extract_topic_from_json(script_path)
-    sub_output_file = f"resources/subtitles/{topic.split(' ')[0]}.srt"
-    video_file = f"resources/video/{topic.split(' ')[0]}.mp4"
+    # topic = "_".join(topic.split(" ")[:2])
+    # topic = "MLSA_KIIT"
+    import re
+    topic = re.sub(r"[^A-Za-z0-9\s]+", " ",topic)
+    topic = re.sub(r"\s+", "_", topic)
+    sub_output_file = f"resources/subtitles/{topic}.srt"
+    video_file = f"resources/video/{topic}.mp4"
     
     # 5. Create subtitles in a .srt file
+    print("Creating .srt subtitle file")
     create_complete_srt(script_folder = script_path,
                         audio_file_folder = audio_path,
                         outfile_path = sub_output_file,

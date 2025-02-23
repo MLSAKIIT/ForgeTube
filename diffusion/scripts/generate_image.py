@@ -11,7 +11,7 @@ image = modal.Image.debian_slim().pip_install(
     "accelerate"
 )
 
-app = modal.App(name="finalgen_app")
+app = modal.App(name="ForgeTube_app")
 
 @app.function(image=image, gpu="A10G")
 def generate_image(prompt, negative_prompt="", steps=50, guidance_scale=9, width=1920, height=1080, seed=None):

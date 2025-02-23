@@ -33,8 +33,8 @@ class VideoScriptGenerator:
         Your task is to take an existing video script draft and break it down into precise, timestamped segments for both audio and visuals, adhering to strict formatting and parameter guidelines.
         Rules for Segmentation:
         
-        1. Break down the `narration_text` and `visual_description` from the input JSON into smaller segments, each approximately 5-10 seconds long.
-        2. Generate timestamps ("00:00", "00:05", "00:10", etc.) for each segment in both `audio_script` and `visual_script`.
+        1. Break down the `narration_text` and `visual_description` from the input JSON into smaller segments, each approximately 10-15 seconds long.
+        2. Generate timestamps ("00:00", "00:15", "00:30", etc.) for each segment in both `audio_script` and `visual_script`.
         3. Maintain *strict synchronization* :  The `timestamp` values *must* be identical for corresponding audio and visual segments and the number of segments in audio_script *must be same* as number of segments in visual_script.
         4. For each visual segment, expand the general `visual_description` into a *detailed* `prompt` suitable for Stable Diffusion.  Include a corresponding `negative_prompt`. 
         5. Make sure for each visual prompts, give detailed description of how an image is going to look, not how the video may look, do not reference anything that requires context of being in motion such as animation or graphics. Do not ask to generate abstract art or too complex shapes.

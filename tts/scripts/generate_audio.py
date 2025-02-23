@@ -1,11 +1,4 @@
-# import modal
 
-# image = modal.Image.debian_slim().pip_install(
-#     "pydub>=0.25.1",
-#     "kokoro>=0.7.16",
-#     "soundfile>=0.13.1"
-# )
-# app = modal.App(name="Generate Audio")
 from pydub import AudioSegment
 import json
 import io
@@ -66,5 +59,5 @@ def main_generate_audio(script_path,audio_path):
     
     print(f"Audio generation complete! Saved as {final_path}")
 
-if __name__ == "__main__":
-    main_generate_audio(script_path="resources/scripts/script.json",audio_path="resources/audio")
+# if __name__ == "__main__":
+#     main_generate_audio(script_path="resources/scripts/script.json",audio_path="resources/audio")
