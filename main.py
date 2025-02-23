@@ -12,15 +12,37 @@ TODO: 4. All gpu related tasks must be performed on modal. Works
 '''
 if __name__ == "__main__":
     # Update folder paths as needed.
-    script_path = "resources/scripts/"
-    os.makedirs(script_path, exist_ok=True) # creates the folders if not made already
-    script_path += "script.json" # Name of the script file
+    script_path = "resources/scripts/" # creates the folders if not made already
     images_path = "resources/images/"
-    os.makedirs(images_path, exist_ok=True)
     audio_path = "resources/audio/"
-    os.makedirs(audio_path, exist_ok=True)
     font_path = "resources/font/font.ttf"
     
+    def create_or_check_folder(folder_path):
+        """
+        Creates a folder if it doesn't exist.
+        If folder exists, checks for files and raises FileExistsError if any are found.
+        
+        Args:
+            folder_path (str): Path to the folder
+        
+        Raises:
+            FileExistsError: If folder exists and contains files
+        """
+        # If folder doesn't exist, create it
+        if not os.path.exists(folder_path):
+            os.makedirs(folder_path)
+            print(f"Created Folder: {folder_path}")
+        else:
+            # Check if folder has any contents
+            if any(os.listdir(folder_path)):
+                raise FileExistsError(f"Folder : '{folder_path}' already exists and contains files. Please remove them or make a new folder")
+            # print(f"folder '{folder_path}' exists but is empty")
+    
+    create_or_check_folder(images_path)
+    create_or_check_folder(audio_path)
+    create_or_check_folder(script_path)
+
+    script_path += "script.json" # Name of the script file
     # 1. Generate the Script
     gem_api = "Enter your Gemini API Key here"
     serp_api = "Enter your Serp API key here"

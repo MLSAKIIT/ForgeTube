@@ -445,19 +445,19 @@ def create_complete_srt(script_folder :str,
     print(f"File saved successfully at {outfile_path}")
 
         
-if __name__ == "__main__":
-    image_folder = "resources/images/"  
-    audio_folder = "resources/Audio/"  
-    script_path = "resources/scripts/script.json" 
-    font_path = "resources/font/font.ttf"
-    sub_output_file = "The.srt"
-    topic = extract_topic_from_json(script_path)
-    output_file = f"The.mp4"
+# if __name__ == "__main__":
+#     image_folder = "resources/images/"  
+#     audio_folder = "resources/Audio/"  
+#     script_path = "resources/scripts/script.json" 
+#     font_path = "resources/font/font.ttf"
+#     sub_output_file = "The.srt"
+#     topic = extract_topic_from_json(script_path)
+#     output_file = f"The.mp4"
     
-    create_complete_srt(script_folder=script_path,
-                        audio_file_folder=audio_folder,
-                        outfile_path=sub_output_file,
-                        chunk_size = 10)
+#     create_complete_srt(script_folder=script_path,
+#                         audio_file_folder=audio_folder,
+#                         outfile_path=sub_output_file,
+#                         chunk_size = 10)
     
-    create_video(image_folder, audio_folder,script_path,font_path, output_file,with_subtitles=True)
+#     create_video(image_folder, audio_folder,script_path,font_path, output_file,with_subtitles=True)
     

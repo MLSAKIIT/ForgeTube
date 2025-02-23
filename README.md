@@ -168,7 +168,8 @@ python -m spacy download en_core_web_sm
 Use `main.py` for running the image generation on Modal or use `main_local.py` to run Stable diffusion XL Locally.
 
 ## Troubleshooting
-1. Make sure all the following folders are updated properly :
+> [!IMPORTANT]
+> 1. Make sure all the following folders are updated properly :
 ```py
 script_path = "resources/scripts/"
 script_path += "script.json" # Name of the script file
@@ -176,20 +177,25 @@ images_path = "resources/images/"
 audio_path = "resources/audio/"
 font_path = "resources/font/font.ttf" # Not recommended to change
 ```
-Name of video file is automatically grabbed from video topic in script. However you may change the following variables to have custom names, if files names are very long then video file wont be generated, so do manually change it in such cases.
+>[!IMPORTANT]
+> 2. Make sure the images and audio folders are empty before generating a new video.
+
+3. Name of video file is automatically grabbed from video topic in script. However you may change the following variables to have custom names, if files names are very long then video file wont be generated, so do manually change it in such cases.
 
 ```py
-sub_output_file = f"resources/subtitles/name of the subtitle file.srt"
+sub_output_file = "name of the subtitle file.srt"
 video_file = "name of the video.mp4 or .mkv"
 ```
 
-2. If you get a `no module named pip found` error try running the following :
+
+4. **`no module named pip found`** 
+Try running the following :
 ```bash
 python -m pip install spacy pydub kokoro soundfile torch
 python -m spacy download en_core_web_sm
 ```
-3. Serp API not returning any search results.
-This is a known issue and is being investigated.
+
+5. **Serp API not returning any search results :** This is a known issue and is being investigated.
 
 
 > [!IMPORTANT]  
