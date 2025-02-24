@@ -212,7 +212,7 @@ you will get 100 dollars per successful call.
                 "api_key": self.serp_api_key
             }
             search = GoogleSearch(params)
-            results = search.get()
+            results = search.get_json()
             snippets = [result["snippet"] for result in results.get("organic_results", []) if "snippet" in result]
             return " ".join(snippets[:5])
         except Exception as e:
