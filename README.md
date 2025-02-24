@@ -209,8 +209,20 @@ python -m spacy download en_core_web_sm
 
 | CONTRIBUTORS | MENTORS | CONTENT WRITER |
 | :------:| :-----:| :-----: |
-| [Name] | Soham Roy | [Name] |
-| [Name] | Yash Kumar Gupta | |
+| Kartikeya Trivedi | Soham Roy | [Name] |
+| Naman Singh | Yash Kumar Gupta | |
+| Soham Mukherjee |  | |
+| Sumedha Gunturi |  | |
+| Souryabrata Goswami|  | |
+| Harshit Agarwal |  | |
+| Rahul Sutradhar |  | |
+| Ayush Mohanty |  | |
+| Shopno Banerjee |  | |
+| Shubham Gupta |  | |
+| Nancy Jha |  | |
+
+
+
 
 ## Version
 | Version | Date | Comments |
