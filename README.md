@@ -219,7 +219,8 @@ python -m spacy download en_core_web_sm
 | Ayush Mohanty |  | |
 | Shopno Banerjee |  | |
 | Shubham Gupta |  | |
-| Nancy Jha |  | |
+| Sarthak Singh |  | |
+| Nancy |  | |
 
 
 
