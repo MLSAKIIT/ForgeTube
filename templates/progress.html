@@ -1,0 +1,130 @@
+{% extends "layout.html" %} {% block title %}Video Generation Progress -
+ForgeTube{% endblock %} {% block content %}
+<div id="task-container" class="card" data-task-id="{{ task.id }}">
+  <div class="card-title">Video Generation: {{ task.topic }}</div>
+
+  <div class="mb-4">
+    <span
+      class="badge {% if task.status == 'Completed' %}badge-completed{% elif task.status == 'Queued' %}badge-queued{% else %}badge-processing{% endif %}"
+      id="status-badge"
+    >
+      {{ task.status }}
+    </span>
+  </div>
+
+  <div class="mb-4">
+    <p>
+      <strong>Status:</strong> <span id="task-status">{{ task.status }}</span>
+    </p>
+    <p>
+      <strong>Created:</strong> {{ task.created_at|int|timestamp_to_datetime }}
+    </p>
+    <p><strong>Duration:</strong> {{ task.duration }} seconds</p>
+    {% if task.key_points %}
+    <p><strong>Key Points:</strong> {{ task.key_points|join(', ') }}</p>
+    {% endif %}
+  </div>
+
+  <div class="progress-container">
+    <div
+      id="progress-bar"
+      class="progress-bar"
+      style="width: 
+            {% if task.status == 'Completed' %}100%
+            {% elif task.status == 'Queued' %}5%
+            {% elif task.status == 'Generating script...' %}15%
+            {% elif task.status == 'Script generated' %}25%
+            {% elif task.status == 'Generating images...' %}40%
+            {% elif task.status == 'Generating audio...' %}60%
+            {% elif task.status == 'Assembling video...' %}80%
+            {% else %}0%{% endif %}"
+    ></div>
+  </div>
+
+  {% if task.script %}
+  <div class="mt-4 mb-4">
+    <h3 class="mb-2">Generated Script</h3>
+    <div class="json-viewer">
+      <div id="json-content" data-json="{{ task.script|tojson }}"></div>
+    </div>
+
+    {% if task.status == 'Script generated' %}
+    <div class="mt-3">
+      <a
+        href="{{ url_for('refine_script', task_id=task.id) }}"
+        class="btn btn-outline"
+        >Refine Script</a
+      >
+    </div>
+    {% endif %}
+  </div>
+  {% endif %}
+
+  <div
+    id="result-section"
+    class="mt-4 {% if task.status != 'Completed' %}hidden{% endif %}"
+  >
+    <h3 class="mb-2">Generated Video</h3>
+    {% if task.result_url %}
+    <div class="video-container mb-3">
+      <video id="result-video" controls>
+        <source src="{{ task.result_url }}" type="video/mp4" />
+        Your browser does not support the video tag.
+      </video>
+    </div>
+    <div class="text-center">
+      <a href="{{ task.result_url }}" class="btn btn-primary" download
+        >Download Video</a
+      >
+    </div>
+    {% else %}
+    <p class="text-muted">
+      Video generation is complete. Please refresh the page if the video doesn't
+      appear.
+    </p>
+    {% endif %}
+  </div>
+
+  <div class="mt-4 text-center">
+    <a href="{{ url_for('create') }}" class="btn btn-outline"
+      >Create Another Video</a
+    >
+  </div>
+</div>
+{% endblock %} {% block head %}
+<style>
+  .hidden {
+    display: none;
+  }
+
+  /* JSON styling */
+  .json-key {
+    color: #f59e0b;
+  }
+
+  .json-string {
+    color: #10b981;
+  }
+
+  .json-number {
+    color: #3b82f6;
+  }
+
+  .json-boolean {
+    color: #8b5cf6;
+  }
+
+  .json-null {
+    color: #ef4444;
+  }
+</style>
+{% endblock %} {% block scripts %}
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const taskId = document.getElementById("task-container").dataset.taskId;
+    if (taskId) {
+      pollTaskStatus(taskId);
+    }
+  });
+</script>
+{% endblock %}
