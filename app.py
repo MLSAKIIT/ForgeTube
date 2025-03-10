@@ -7,14 +7,7 @@ import time
 import threading
 from datetime import datetime
 
-# Import ForgeTube components
-# We'll integrate with the existing components when needed
-# from diffusion.scripts.generate_script import VideoScriptGenerator
-# from diffusion.scripts.generate_image_local import main_generate_image
-# from tts.scripts.generate_audio import main_generate_audio
-# from assembly.scripts.assembly_video import create_video, create_complete_srt, extract_topic_from_json
 
-# Initialize Flask app
 app = Flask(__name__)
 app.secret_key = os.urandom(24)
 app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024  # 16MB max upload size
@@ -70,8 +63,6 @@ def generate_video_task(task_id, topic, duration, key_points, api_keys):
     task['script'] = script
     task['status'] = 'Script generated'
     
-    # In a real implementation, continue with image generation, audio generation, and video assembly
-    # For now, we'll simulate these steps
     task['status'] = 'Generating images...'
     time.sleep(3)  # Simulate image generation
     
@@ -82,7 +73,7 @@ def generate_video_task(task_id, topic, duration, key_points, api_keys):
     time.sleep(3)  # Simulate video assembly
     
     task['status'] = 'Completed'
-    task['result_url'] = f"/results/{task_id}.mp4"  # This would be the actual video URL
+    task['result_url'] = f"/results/{task_id}.mp4" 
 
 # Routes
 @app.route('/')
