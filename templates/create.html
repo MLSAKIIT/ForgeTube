@@ -1,0 +1,95 @@
+{% extends "layout.html" %} {% block title %}Create a Video - ForgeTube{%
+endblock %} {% block content %}
+<div class="card">
+  <div class="card-title">Create a New Video</div>
+
+  {% if error %}
+  <div class="alert alert-danger mb-4">{{ error }}</div>
+  {% endif %}
+
+  <div id="form-error" class="alert alert-danger mb-4 hidden"></div>
+
+  <form id="create-form" method="POST" action="{{ url_for('create') }}">
+    <div class="form-group">
+      <label for="topic">Video Topic *</label>
+      <input
+        type="text"
+        id="topic"
+        name="topic"
+        required
+        placeholder="e.g., The Future of Artificial Intelligence"
+      />
+    </div>
+
+    <div class="form-group">
+      <label for="duration">Duration (seconds)</label>
+      <input
+        type="number"
+        id="duration"
+        name="duration"
+        min="30"
+        max="300"
+        value="60"
+        placeholder="60"
+      />
+      <small class="text-muted">Recommended: 30-300 seconds</small>
+    </div>
+
+    <div class="form-group">
+      <label for="key_points">Key Points (comma separated)</label>
+      <textarea
+        id="key_points"
+        name="key_points"
+        placeholder="History of AI, Current applications, Future possibilities"
+      ></textarea>
+      <small class="text-muted"
+        >List the main points you want to cover in your video</small
+      >
+    </div>
+
+    <div class="card mb-4" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="card-title">API Keys</div>
+      <p class="text-muted mb-3">
+        ForgeTube requires API keys to generate content. Your keys are used
+        securely and never stored.
+      </p>
+
+      <div class="form-group">
+        <label for="gemini_api">Gemini API Key *</label>
+        <input
+          type="password"
+          id="gemini_api"
+          name="gemini_api"
+          required
+          placeholder="Your Gemini API key"
+        />
+        <small class="text-muted"
+          >Get your key at
+          <a href="https://aistudio.google.com/apikey" target="_blank"
+            >Google AI Studio</a
+          ></small
+        >
+      </div>
+
+      <div class="form-group">
+        <label for="serp_api">SERP API Key *</label>
+        <input
+          type="password"
+          id="serp_api"
+          name="serp_api"
+          required
+          placeholder="Your SERP API key"
+        />
+        <small class="text-muted"
+          >Get your key at
+          <a href="https://serpapi.com" target="_blank">SerpAPI</a></small
+        >
+      </div>
+    </div>
+
+    <div class="text-center">
+      <button type="submit" class="btn btn-primary">Generate Video</button>
+    </div>
+  </form>
+</div>
+{% endblock %}
