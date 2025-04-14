@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>
+      {% block title %}ForgeTube - Automated Video Generation{% endblock %}
+    </title>
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='css/style.css') }}"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Fira+Code&display=swap"
+      rel="stylesheet"
+    />
+    <!-- Favicon -->
+    <link
+      rel="icon"
+      href="{{ url_for('static', filename='images/favicon.ico') }}"
+    />
+    {% block head %}{% endblock %}
+  </head>
+  <body>
+    <header>
+      <div class="container header-container">
+        <a href="{{ url_for('index') }}" class="logo">
+          <svg
+            width="40"
+            height="40"
+            viewBox="0 0 24 24"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path d="M4 8H2V20C2 21.1 2.9 22 4 22H16V20H4V8Z" fill="#6366F1" />
+            <path
+              d="M20 2H8C6.9 2 6 2.9 6 4V16C6 17.1 6.9 18 8 18H20C21.1 18 22 17.1 22 16V4C22 2.9 21.1 2 20 2ZM20 16H8V4H20V16ZM12 5.5V14.5L18 10L12 5.5Z"
+              fill="#6366F1"
+            />
+          </svg>
+          ForgeTube
+        </a>
+        <nav class="nav-links">
+          <a
+            href="{{ url_for('index') }}"
+            class="{% if request.endpoint == 'index' %}active{% endif %}"
+            >Home</a
+          >
+          <a
+            href="{{ url_for('create') }}"
+            class="{% if request.endpoint == 'create' %}active{% endif %}"
+            >Create Video</a
+          >
+        </nav>
+      </div>
+    </header>
+
+    <main>
+      <div class="container">{% block content %}{% endblock %}</div>
+    </main>
+
+    <footer>
+      <div class="container">
+        <div class="footer-content">
+          <p>ForgeTube - Automated AI Video Generation</p>
+          <div class="footer-links">
+            <a href="https://github.com/MLSAKIIT/ForgeTube" target="_blank"
+              >GitHub</a
+            >
+            <a
+              href="https://www.youtube.com/channel/UCVgzYqxxY6wCIto-Nzx68Uw"
+              target="_blank"
+              >YouTube</a
+            >
+            <a href="https://x.com/mlsakiit" target="_blank">Twitter</a>
+            <a href="https://discord.com/invite/P6VCP2Ry3q" target="_blank"
+              >Discord</a
+            >
+          </div>
+        </div>
+      </div>
+    </footer>
+
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+    {% block scripts %}{% endblock %}
+  </body>
+</html>

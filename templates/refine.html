@@ -1,0 +1,66 @@
+{% extends "layout.html" %} {% block title %}Refine Script - ForgeTube{%
+endblock %} {% block content %}
+<div class="card">
+  <div class="card-title">Refine Script: {{ task.topic }}</div>
+
+  <p class="mb-4">
+    Review the generated script below and provide feedback to improve it. You
+    can request specific changes to the content, style, tone, or focus.
+  </p>
+
+  <div class="mb-4">
+    <h3 class="mb-2">Generated Script</h3>
+    <div class="json-viewer">
+      <div id="json-content" data-json="{{ task.script|tojson }}"></div>
+    </div>
+  </div>
+
+  <form method="POST" action="{{ url_for('refine_script', task_id=task.id) }}">
+    <div class="form-group">
+      <label for="feedback">Your Feedback</label>
+      <textarea
+        id="feedback"
+        name="feedback"
+        required
+        placeholder="Please make these changes to the script..."
+      ></textarea>
+      <small class="text-muted"
+        >Be specific about what you want to change or improve in the
+        script.</small
+      >
+    </div>
+
+    <div class="grid grid-cols-2 gap-4">
+      <button type="submit" class="btn btn-primary">Apply Feedback</button>
+      <a
+        href="{{ url_for('task_progress', task_id=task.id) }}"
+        class="btn btn-outline"
+        >Skip Refinement</a
+      >
+    </div>
+  </form>
+</div>
+{% endblock %} {% block head %}
+<style>
+  /* JSON styling */
+  .json-key {
+    color: #f59e0b;
+  }
+
+  .json-string {
+    color: #10b981;
+  }
+
+  .json-number {
+    color: #3b82f6;
+  }
+
+  .json-boolean {
+    color: #8b5cf6;
+  }
+
+  .json-null {
+    color: #ef4444;
+  }
+</style>
+{% endblock %}

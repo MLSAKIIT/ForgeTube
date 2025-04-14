@@ -1,0 +1,312 @@
+{% extends "layout.html" %} {% block title %}ForgeTube - AI-Powered Video
+Generation{% endblock %} {% block head %}
+<style>
+  .hero-section {
+    position: relative;
+    border-radius: 0.5rem;
+    overflow: hidden;
+    padding: 4rem 2rem;
+    background: linear-gradient(
+      120deg,
+      rgba(99, 102, 241, 0.15),
+      rgba(30, 30, 30, 0.3)
+    );
+    margin-bottom: 2.5rem;
+  }
+
+  .hero-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M11 18c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm48 25c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm-43-7c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm63 31c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM34 90c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm56-76c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM12 86c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm28-65c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm23-11c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-6 60c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm29 22c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zM32 63c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm57-13c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-9-21c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM60 91c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM35 41c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM12 60c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2z' fill='%236366F1' fill-opacity='0.05' fill-rule='evenodd'/%3E%3C/svg%3E");
+    opacity: 0.5;
+    z-index: 0;
+  }
+
+  .hero-content {
+    position: relative;
+    z-index: 1;
+    max-width: 800px;
+    margin: 0 auto;
+  }
+
+  .hero-title {
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin-bottom: 1.5rem;
+    background: linear-gradient(90deg, #6366f1, #8b5cf6);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .feature-card {
+    height: 100%;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    border: 1px solid rgba(45, 45, 45, 0.9);
+    background-color: rgba(30, 30, 30, 0.5);
+  }
+
+  .feature-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3);
+    border-color: rgba(99, 102, 241, 0.3);
+  }
+
+  .feature-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 50px;
+    height: 50px;
+    border-radius: 12px;
+    margin-bottom: 1rem;
+    background-color: rgba(99, 102, 241, 0.1);
+  }
+
+  .steps-container {
+    position: relative;
+    padding: 2rem;
+    background-color: rgba(17, 17, 17, 0.4);
+    border-radius: 0.5rem;
+  }
+
+  .step {
+    position: relative;
+    padding-left: 3rem;
+    margin-bottom: 2rem;
+  }
+
+  .step-number {
+    position: absolute;
+    left: 0;
+    top: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 2rem;
+    height: 2rem;
+    border-radius: 9999px;
+    background-color: rgba(99, 102, 241, 0.2);
+    color: #6366f1;
+    font-weight: 700;
+  }
+
+  .cta-container {
+    text-align: center;
+    padding: 2rem;
+    margin-top: 2rem;
+    border-radius: 0.5rem;
+    background: linear-gradient(
+      to right,
+      rgba(99, 102, 241, 0.1),
+      rgba(139, 92, 246, 0.1)
+    );
+    border: 1px solid rgba(99, 102, 241, 0.2);
+  }
+
+  .btn-cta {
+    padding: 0.75rem 2rem;
+    font-size: 1.125rem;
+    background: linear-gradient(to right, #6366f1, #8b5cf6);
+    border: none;
+    border-radius: 0.5rem;
+    color: white;
+    font-weight: 600;
+    cursor: pointer;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
+  }
+
+  .btn-cta:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(99, 102, 241, 0.4);
+  }
+
+  @media (max-width: 768px) {
+    .hero-title {
+      font-size: 2rem;
+    }
+
+    .steps-container {
+      padding: 1rem;
+    }
+
+    .step {
+      padding-left: 2.5rem;
+    }
+  }
+
+  .hidden {
+    display: none;
+  }
+</style>
+{% endblock %} {% block content %}
+<!-- Hero Section -->
+<div class="hero-section">
+  <div class="hero-overlay"></div>
+  <div class="hero-content text-center">
+    <h1 class="hero-title">Transform Your Ideas into Videos with AI</h1>
+    <p class="text-muted mb-4">
+      ForgeTube generates professional videos from text prompts using AI-powered
+      script writing, image generation, and voice synthesis.
+    </p>
+    <a href="{{ url_for('create') }}" class="btn-cta">Create a Video</a>
+  </div>
+</div>
+
+<!-- Features Section -->
+<h2 class="mb-4" style="font-size: 1.75rem; font-weight: 600">
+  Powerful AI Features
+</h2>
+<div class="grid grid-cols-3 mb-5">
+  <div class="card feature-card">
+    <div class="feature-icon">
+      <svg
+        width="24"
+        height="24"
+        viewBox="0 0 24 24"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path
+          d="M19 5V19H5V5H19ZM21 3H3V21H21V3ZM17 17H7V16H17V17ZM17 15H7V14H17V15ZM17 12H7V7H17V12Z"
+          fill="#6366F1"
+        />
+      </svg>
+    </div>
+    <div class="card-title">Script Generation</div>
+    <p>
+      Provide a topic and key points, and our AI will craft a comprehensive
+      script, complete with audio narration and visual prompts.
+    </p>
+  </div>
+  <div class="card feature-card">
+    <div class="feature-icon">
+      <svg
+        width="24"
+        height="24"
+        viewBox="0 0 24 24"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path
+          d="M19 3H5C3.9 3 3 3.9 3 5V19C3 20.1 3.9 21 5 21H19C20.1 21 21 20.1 21 19V5C21 3.9 20.1 3 19 3ZM19 19H5V5H19V19ZM13.96 12.29L11.21 15.83L9.25 13.47L6.5 17H17.5L13.96 12.29Z"
+          fill="#6366F1"
+        />
+      </svg>
+    </div>
+    <div class="card-title">Image Creation</div>
+    <p>
+      Using state-of-the-art diffusion models, ForgeTube transforms text prompts
+      into stunning visuals tailored to your content.
+    </p>
+  </div>
+  <div class="card feature-card">
+    <div class="feature-icon">
+      <svg
+        width="24"
+        height="24"
+        viewBox="0 0 24 24"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path
+          d="M12 15C12.55 15 13 14.55 13 14V6C13 5.45 12.55 5 12 5C11.45 5 11 5.45 11 6V14C11 14.55 11.45 15 12 15ZM17 15C17.55 15 18 14.55 18 14V10C18 9.45 17.55 9 17 9C16.45 9 16 9.45 16 10V14C16 14.55 16.45 15 17 15ZM7 15C7.55 15 8 14.55 8 14V10C8 9.45 7.55 9 7 9C6.45 9 6 9.45 6 10V14C6 14.55 6.45 15 7 15ZM19.07 3C19.07 1.9 18.17 1 17.07 1H6.93C5.83 1 4.93 1.9 4.93 3L3 3V6C3 7.1 3.9 8 5 8V21C5 21.55 5.45 22 6 22H18C18.55 22 19 21.55 19 21V8C20.1 8 21 7.1 21 6V3H19.07Z"
+          fill="#6366F1"
+        />
+      </svg>
+    </div>
+    <div class="card-title">Voice Synthesis</div>
+    <p>
+      Convert your script into natural-sounding narration with our advanced
+      text-to-speech technology.
+    </p>
+  </div>
+</div>
+
+<!-- How It Works Section -->
+<div class="card mb-5">
+  <div class="card-title">How It Works</div>
+  <div class="steps-container">
+    <div class="grid grid-cols-2">
+      <div>
+        <div class="step">
+          <div class="step-number">1</div>
+          <h3 class="mb-2">Enter Your Topic</h3>
+          <p class="text-muted">
+            Provide a topic, desired duration, and key points you want to cover
+            in your video.
+          </p>
+        </div>
+        <div class="step">
+          <div class="step-number">2</div>
+          <h3 class="mb-2">Review & Refine</h3>
+          <p class="text-muted">
+            Review the AI-generated script and provide feedback to refine it to
+            your liking.
+          </p>
+        </div>
+      </div>
+      <div>
+        <div class="step">
+          <div class="step-number">3</div>
+          <h3 class="mb-2">Generate Assets</h3>
+          <p class="text-muted">
+            ForgeTube automatically creates images and audio narration based on
+            the approved script.
+          </p>
+        </div>
+        <div class="step">
+          <div class="step-number">4</div>
+          <h3 class="mb-2">Assemble & Download</h3>
+          <p class="text-muted">
+            The final video is assembled with images, audio, and subtitles,
+            ready for download.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Call to Action -->
+<div class="cta-container">
+  <h2 class="mb-3" style="font-size: 1.75rem; font-weight: 600">
+    Ready to create your first AI video?
+  </h2>
+  <p class="text-muted mb-4">
+    No design or video editing skills required. Let AI do the work for you.
+  </p>
+  <a href="{{ url_for('create') }}" class="btn-cta">Start Creating Now</a>
+</div>
+{% endblock %} {% block scripts %}
+<script>
+  // Add subtle animations when the page loads
+  document.addEventListener("DOMContentLoaded", function () {
+    // Animate feature cards on scroll
+    const featureCards = document.querySelectorAll(".feature-card");
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.style.opacity = 1;
+            entry.target.style.transform = "translateY(0)";
+          }
+        });
+      },
+      { threshold: 0.1 }
+    );
+
+    featureCards.forEach((card) => {
+      card.style.opacity = 0;
+      card.style.transform = "translateY(20px)";
+      card.style.transition = "opacity 0.5s ease, transform 0.5s ease";
+      observer.observe(card);
+    });
+  });
+</script>
+{% endblock %}
